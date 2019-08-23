@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Resources>
+  <Resource KmatOld ="12345"  Ceh = "1301" KmatNew="920 1301 000 12345" />
+  <Resource KmatOld ="123456" Ceh = "1302"  KmatNew="920 1302 00 123456" />
+  <Resource KmatOld ="123456" Ceh = "13999"  KmatNew="920 13999 0 123456" />
+</Resources>
