@@ -63,6 +63,10 @@
       <Name>ExcelReadC</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="DataTests\001 - 23016 - 1016156 - Черныш Л.П. - Балан_Test.xlsx" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
