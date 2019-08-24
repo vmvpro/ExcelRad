@@ -117,6 +117,12 @@ namespace ExcelReadC
             return null;
         }
 
+        public static DataTable ImportDataForExcel()
+        {
+            return null;
+        }
+
+
         public static string ConvertKmat(string kmat_old, string ceh, List<string> DoubleKmat)
         {
             string kmat = "";
