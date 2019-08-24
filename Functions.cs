@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 
@@ -117,9 +118,28 @@ namespace ExcelReadC
             return null;
         }
 
-        public static DataTable ImportDataForExcel()
+        public static DataTable ImportDataForExcel(string path, string fileName)
         {
-            return null;
+            DataTable dt = new DataTable("SheetExcel");
+
+            string connectionString;
+            OleDbConnection connection;
+
+            //'Для Excel 12.0 
+            connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + path + fileName + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
+            connection = new OleDbConnection(connectionString);
+            connection.Open();
+
+            OleDbCommand command = connection.CreateCommand();
+
+            command.CommandText = "Select * From [sheet$A0:I15000] "; 
+
+            var da = new OleDbDataAdapter(command);
+            dt = new DataTable();
+
+            da.Fill(dt);
+
+            return dt;
         }
 
 
