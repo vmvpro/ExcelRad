@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ExcelReadC
 {
@@ -217,13 +218,26 @@ namespace ExcelReadC
             return kmat;
         }
 
+        public static string ConvertOldResource(string kmat_old)
+        {
+            int result;
+            char[] chars = new char[] { ' ', ',', '-', '.', '+' };
+
+            var convertOldResource = String.Join("", kmat_old.Split(chars));
+
+            if (Int32.TryParse(convertOldResource, out result))
+                return result.ToString();
+            
+            return convertOldResource;
+        }
+
         public static string ConvertKmatTest(string kmat_old, string ceh, List<string> DoubleKmat)
         {
             string kmat = "";
             string ceh_convert = "";
             int count_kmat_old = 0;
 
-            string old_kmat_str = "";
+            string old_kmat_str = "";   
             try
             {
                 string old_kmat_convert = kmat_old.Replace(" ", "").Replace(",", "").Replace("-", "").Replace(".", "").Replace("+", "");    //00123456
