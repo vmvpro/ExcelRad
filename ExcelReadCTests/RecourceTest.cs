@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using ExcelReadC;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,7 +8,7 @@ namespace ExcelReadCTests
     [TestClass]
     public class RecourceTest
     {
-        public TestContext TestContext { get; set; }
+        public static TestContext TestContext { get; set; }
 
         private static List<string> DoubleKmat;
 
@@ -15,8 +16,8 @@ namespace ExcelReadCTests
         public static void Initialization(TestContext context)
         {
             DoubleKmat = new List<string>();
-
-
+            
+            // = DoubleKmat.ToArray();
         }
 
         [TestMethod]
