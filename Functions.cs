@@ -223,6 +223,8 @@ namespace ExcelReadC
             int result;
             char[] chars = new char[] { ' ', ',', '-', '.', '+' };
 
+            StringBuilder sb = new StringBuilder();
+
             var convertOldResource = String.Join("", kmat_old.Split(chars));
 
             if (Int32.TryParse(convertOldResource, out result))
@@ -248,12 +250,7 @@ namespace ExcelReadC
                 string old_kmat_convert = kmat_old.Replace(" ", "").Replace(",", "").Replace("-", "").Replace(".", "").Replace("+", "");    //00123456
                 old_kmat_str = old_kmat_convert;
             }
-
-            if (!DoubleKmat.Contains(kmat_old) || kmat_old == "")
-            {
-
-            }
-
+            
             if (ceh.Count() < 6 && old_kmat_str.Count() <= 7)
                 ceh_convert = ceh;
             else if (ceh.Count() > 4)
