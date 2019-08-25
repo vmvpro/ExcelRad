@@ -244,9 +244,9 @@ namespace ExcelReadC
             //kmat_new = "917" + ceh.ToString() + new String('0', count_kmat_old) + kmat_old;
 
             //string kmat_new = kmat_old.Replace("-", "");
-            
 
-            dt = Functions.ImportDataForExcel(path, fileName);
+            string pathFullName = Path.Combine(path, fileName);
+            dt = Functions.ImportDataForExcel(pathFullName);
 
             string name = dt.Rows[0]["n_kdk"].ToString();
 

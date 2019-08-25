@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ExcelReadC
 {
@@ -12,7 +11,7 @@ namespace ExcelReadC
     {
 
         #region "    Методы преобразования полей таблицы Excel    "
-        
+
         public static bool Flag(object[] arrayColumn)
         {
             bool result2 = false;
@@ -114,12 +113,8 @@ namespace ExcelReadC
 
         #endregion
 
-        public static Dictionary<string, int> DictionaryLoadedDataExcelResource(DataTable dt)
-        {
-            return null;
-        }
-
-        public static DataTable ImportDataForExcel(string path, string fileName)
+        // 1
+        public static DataTable ImportDataForExcel(string pathFullName)
         {
             DataTable dt = new DataTable("SheetExcel");
 
@@ -127,15 +122,15 @@ namespace ExcelReadC
             OleDbConnection connection;
 
             //'Для Excel 12.0 
-            connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + path + fileName + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
+            connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + pathFullName + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
             connection = new OleDbConnection(connectionString);
             connection.Open();
 
             OleDbCommand command = connection.CreateCommand();
 
-            command.CommandText = "Select * From [sheet$A0:I15000] "; 
+            command.CommandText = "Select * From [sheet$A0:I15000] ";
 
-            var da = new OleDbDataAdapter(command);
+            OleDbDataAdapter da = new OleDbDataAdapter(command);
             dt = new DataTable();
 
             da.Fill(dt);
@@ -143,6 +138,48 @@ namespace ExcelReadC
             return dt;
         }
 
+        // 2
+        public static List<string> ListFieldKmatForExcel(DataTable dtExcel)
+        {
+            List<string> list = new List<string>();
+
+            foreach (DataRow row in dtExcel.Rows)
+            {
+                string rowString = row["kmat"].ToString().Trim();
+                list.Add(ConvertOldResource(rowString));
+            }
+
+            return list;
+        }
+
+        // 3
+        public static Dictionary<string, int> DictionaryResourceAndCount(List<string> listField)
+        {
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+            IEnumerable<IGrouping<string, string>> listGroupBy = listField.GroupBy(x => x);
+
+            foreach (IGrouping<string, string> item in listGroupBy)
+                dic.Add(item.Key, item.Count());
+
+            return dic;
+        }
+
+        // 4
+        public static HashSet<string> ListUniqueFieldResource(Dictionary<string, int> dicResources)
+        {
+            //List<string> listUniqu = new List<string>();
+
+            HashSet<string> listUniqu = new HashSet<string>();
+
+            foreach (KeyValuePair<string, int> row in dicResources)
+                for (int i = 1; i < row.Value + 1; i++)
+                {
+                    listUniqu.Add(i + row.Key);
+                }
+
+            return listUniqu;
+        }
 
         public static string ConvertKmat(string kmat_old, string ceh, List<string> DoubleKmat)
         {
@@ -223,15 +260,15 @@ namespace ExcelReadC
             int result;
             char[] chars = new char[] { ' ', ',', '-', '.', '+' };
 
-            var chars_ = " ,-.+".ToArray();
+            char[] chars_ = " ,-.+".ToArray();
 
             StringBuilder sb = new StringBuilder();
-           
-            var convertOldResource = String.Join("", kmat_old.Split(chars));
+
+            string convertOldResource = String.Join("", kmat_old.Split(chars));
 
             if (Int32.TryParse(convertOldResource, out result))
                 return result.ToString();
-            
+
             return convertOldResource;
         }
 
@@ -300,10 +337,10 @@ namespace ExcelReadC
                 kmat = "920" + ceh_convert.ToString() + new String('0', count_kmat_old) + old_kmat_str;   // 3 + 4 + 1 + 7
             }
 
-           
+
 
             return kmat;
-            
+
             #endregion
         }
 
@@ -321,7 +358,7 @@ namespace ExcelReadC
 
         public static string RenameOldResourceInNew(string ceh, int counter)
         {
-            var DoubleKmat = new List<string>();
+            List<string> DoubleKmat = new List<string>();
             string kmat_old = "";
             string kmat = "";
             string old_kmat_str = "";
@@ -363,7 +400,7 @@ namespace ExcelReadC
 
             return kmat;
 
-            
+
 
         }
     }
