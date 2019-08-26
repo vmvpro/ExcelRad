@@ -195,7 +195,16 @@ namespace ExcelReadCTests
             //act
             var actualListUnique = Functions.ListUniqueFieldResource(DataTests.DictionaryGroupBy());
 
-            Assert.IsTrue(hashSetUnique.SetEquals(actualListUnique));
+            CollectionAssert.AreEqual(expendetListUnique, actualListUnique);
+
+            //Assert.IsTrue(hashSetUnique.SetEquals(actualListUnique));
+
+        }
+
+        [TestMethod]
+
+        public void ConvertCeh_Test()
+        {
 
         }
     }

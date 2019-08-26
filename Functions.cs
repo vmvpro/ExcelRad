@@ -184,8 +184,9 @@ namespace ExcelReadC
         }
 
         // 4
-        public static HashSet<string> ListUniqueFieldResource(Dictionary<string, int> dicResourcesAndCount)
+        public static List<string> ListUniqueFieldResource(Dictionary<string, int> dicResourcesAndCount)
         {
+            // Для того, чтобы предусмотреть не повторающие значения в списке
             HashSet<string> listUniqu = new HashSet<string>();
 
             foreach (KeyValuePair<string, int> row in dicResourcesAndCount)
@@ -195,7 +196,7 @@ namespace ExcelReadC
                     else
                         listUniqu.Add(row.Key);
 
-            return listUniqu;
+            return listUniqu.ToList();
         }
 
         //-------------------------------------------------------------------
@@ -274,8 +275,6 @@ namespace ExcelReadC
             return kmat;
         }
 
-        
-
         public static string ConvertKmatTest(string kmat_old, string ceh, List<string> DoubleKmat)
         {
             string kmat = "";
@@ -315,6 +314,8 @@ namespace ExcelReadC
 
             #region "    RenameOldResourceInNew    "
 
+            
+
             if (len_kmat_old >= 12 && !DoubleKmat.Contains(kmat_old))
             {
                 kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12, 12);
@@ -346,6 +347,28 @@ namespace ExcelReadC
             #endregion
         }
 
+        public static string ConvertCeh(string ceh, string old_kmat_str)
+        {
+            string ceh_convert = "";
+
+            if (ceh.Count() < 6 && old_kmat_str.Count() <= 7)
+            {
+                ceh_convert = ceh;
+            }
+
+            else if (ceh.Count() > 5)
+            {
+                ceh_convert = ceh.ToString().Substring(0, 1) + ceh.ToString().Substring(2, 3);
+            }
+            else
+                ceh_convert = ceh;
+
+
+            return ceh_convert;
+
+
+        }
+
         public static string CreateNewResource(string ceh, int counter)
         {
             string str_counter = counter.ToString();
@@ -358,10 +381,14 @@ namespace ExcelReadC
 
         }
 
-        public static string RenameOldResourceInNew(string ceh, int counter)
+        public static string RenameOldResourceInNew(string ceh, string old_kmat)
         {
+            int len_kmat_old = old_kmat.Length;
+
+            //---------------
+
             List<string> DoubleKmat = new List<string>();
-            string kmat_old = "";
+            //string kmat_old = "";
             string kmat = "";
             string old_kmat_str = "";
 
@@ -370,11 +397,34 @@ namespace ExcelReadC
 
             int len = 0;
 
-            int len_kmat_old = 0;
+            
 
             string ceh_convert = "";
 
-            if (len_kmat_old >= 12 && !DoubleKmat.Contains(kmat_old))
+            string kmat_old_;
+            if (len_kmat_old >= 12)
+            {
+                kmat_old_ = old_kmat_str.Substring(len_kmat_old - 12, 12);
+            }
+            else if (old_kmat_str.Count() == 11)
+            {
+                kmat_old_ =  ceh.Substring(ceh.Length - 1) + old_kmat_str;
+            }
+            else if (old_kmat_str.Count() == 10)
+            {
+                kmat_old_ = ceh.Substring(ceh.Length - 2) + old_kmat_str;
+            }
+            else if (old_kmat_str.Count() == 9)
+            {
+                kmat_old_ = ceh.Substring(ceh.Length - 3) + old_kmat_str;
+            }
+            else if (old_kmat_str.Count() == 8)
+            {
+                kmat_old_ = ceh.Substring(ceh.Length - 4) + old_kmat_str;
+            }
+
+
+            if (len_kmat_old >= 12)
             {
                 kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12, 12);
             }
@@ -401,8 +451,6 @@ namespace ExcelReadC
             }
 
             return kmat;
-
-
 
         }
     }

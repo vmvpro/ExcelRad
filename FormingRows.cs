@@ -34,14 +34,20 @@ namespace ExcelReadC
 
 
             string pathFullName = Path.Combine(path, fileName);
-            DataTable dt = Functions.ImportDataForExcel(pathFullName);
 
-            string name = dt.Rows[0]["n_kdk"].ToString();
+            DataTable dtExcel = Functions.ImportDataForExcel(pathFullName);
+            List<string> listFieldResource = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+
+            var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
+
+            List<string> listResourceUnique = Functions.ListUniqueFieldResource(dictionary);
+
+            string name = dtExcel.Rows[0]["n_kdk"].ToString();
 
             
 
             RowTXT rowTXT = new RowTXT();
-            rowTXT.CloneTable(dt);
+            rowTXT.CloneTable(dtExcel);
 
             List<string> DoubleKmat = new List<string>();
             string n_kdk = "";
@@ -49,8 +55,8 @@ namespace ExcelReadC
             try
             {
                 int k = 0;
-                foreach (DataRow row in dt.Rows)
-                //    Console.WriteLine(String.Format("{0}", row.Field<string>("ceh").PadRight(11)));
+                foreach (DataRow row in dtExcel.Rows)
+                //    Console.WriteLine(String.Format("{0}", row.Field<string>("ceh").PadRight(11)));D:\Doc\Work\MS Visual Studio\1_MyApplication\ExcelReadC\ExcelReadC (Git)\FormingRows.cs
                 {
 
                     k++;
@@ -58,7 +64,8 @@ namespace ExcelReadC
                     {
                         string ceh_s = row["ceh"].ToString();
                         string kmat_old = row["kmat"].ToString().Trim();
-                        string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
+                        //string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
+                        string kmat = Functions.ConvertKmatTest(kmat_old, ceh_s, DoubleKmat);
 
                         bool flag1 = false;
                         object[] arrayColumn = row.ItemArray;
@@ -90,11 +97,11 @@ namespace ExcelReadC
                                 DataRow[] rows1 = null;
                                 try
                                 {
-                                    rows1 = dt.Select("kmat = '" + kmat_old + "' and naim = '" + naim + "'");
+                                    rows1 = dtExcel.Select("kmat = '" + kmat_old + "' and naim = '" + naim + "'");
                                 }
                                 catch (Exception)
                                 {
-                                    rows1 = dt.Select("kmat = " + kmat_old + " and naim = '" + naim + "'");
+                                    rows1 = dtExcel.Select("kmat = " + kmat_old + " and naim = '" + naim + "'");
                                 }
 
 
@@ -142,11 +149,11 @@ namespace ExcelReadC
                                 DataRow[] rows2 = null;
                                 try
                                 {
-                                    rows2 = dt.Select("kmat = '" + kmat_old + "'");
+                                    rows2 = dtExcel.Select("kmat = '" + kmat_old + "'");
                                 }
                                 catch (Exception)
                                 {
-                                    rows2 = dt.Select("kmat = " + kmat_old);
+                                    rows2 = dtExcel.Select("kmat = " + kmat_old);
                                 }
 
                                 if (flag == 0)
@@ -288,7 +295,7 @@ namespace ExcelReadC
 
             Console.WriteLine();
 
-            decimal sumCount = dt.Select("n_kdk = '" + n_kdk.ToString() + "'").Sum(x => Convert.ToDecimal(x["count"]));
+            decimal sumCount = dtExcel.Select("n_kdk = '" + n_kdk.ToString() + "'").Sum(x => Convert.ToDecimal(x["count"]));
             //sumCountString = sumCount.ToString();
 
             Console.WriteLine("Сумма количество = " + sumCount);
