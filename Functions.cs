@@ -116,7 +116,7 @@ namespace ExcelReadC
         // 1
         public static DataTable ImportDataForExcel(string pathFullName)
         {
-            DataTable dt = new DataTable("SheetExcel");
+            DataTable dt = new DataTable("Sheet");
 
             string connectionString;
             OleDbConnection connection;
@@ -138,14 +138,32 @@ namespace ExcelReadC
             return dt;
         }
 
-        // 2
-        public static List<string> ListFieldKmatForExcel(DataTable dtExcel)
+        // 2.1
+        public static string ConvertOldResource(string kmat_old)
+        {
+            int result;
+            char[] chars = new char[] { ' ', ',', '-', '.', '+' };
+
+            char[] chars_ = " ,-.+".ToArray();
+
+            StringBuilder sb = new StringBuilder();
+
+            string convertOldResource = String.Join("", kmat_old.Split(chars));
+
+            if (Int32.TryParse(convertOldResource, out result))
+                return result.ToString();
+
+            return convertOldResource;
+        }
+
+        // 2.1
+        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string FieldName)
         {
             List<string> list = new List<string>();
 
             foreach (DataRow row in dtExcel.Rows)
             {
-                string rowString = row["kmat"].ToString().Trim();
+                string rowString = row[FieldName].ToString().Trim();
                 list.Add(ConvertOldResource(rowString));
             }
 
@@ -180,6 +198,8 @@ namespace ExcelReadC
 
             return listUniqu;
         }
+
+        //-------------------------------------------------------------------
 
         public static string ConvertKmat(string kmat_old, string ceh, List<string> DoubleKmat)
         {
@@ -255,22 +275,7 @@ namespace ExcelReadC
             return kmat;
         }
 
-        public static string ConvertOldResource(string kmat_old)
-        {
-            int result;
-            char[] chars = new char[] { ' ', ',', '-', '.', '+' };
-
-            char[] chars_ = " ,-.+".ToArray();
-
-            StringBuilder sb = new StringBuilder();
-
-            string convertOldResource = String.Join("", kmat_old.Split(chars));
-
-            if (Int32.TryParse(convertOldResource, out result))
-                return result.ToString();
-
-            return convertOldResource;
-        }
+        
 
         public static string ConvertKmatTest(string kmat_old, string ceh, List<string> DoubleKmat)
         {
@@ -336,8 +341,6 @@ namespace ExcelReadC
                 count_kmat_old = 12 - ceh_convert.ToString().Count() - old_kmat_str.Count();
                 kmat = "920" + ceh_convert.ToString() + new String('0', count_kmat_old) + old_kmat_str;   // 3 + 4 + 1 + 7
             }
-
-
 
             return kmat;
 

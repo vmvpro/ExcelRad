@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using ExcelReadC;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,17 +10,19 @@ namespace ExcelReadCTests
     [TestClass]
     public class RecourceTest
     {
-        public static TestContext TestContext { get; set; }
+        public TestContext TestContext { get; set; }
 
-        private static List<string> DoubleKmat;
+        int counterListFieldKmatForExcel_Test = 0;
 
-        [ClassInitialize]
-        public static void Initialization(TestContext context)
-        {
-            DoubleKmat = new List<string>();
-            
-            // = DoubleKmat.ToArray();
-        }
+        //private static List<string> DoubleKmat;
+
+        //[ClassInitialize]
+        //public static void Initialization(TestContext context)
+        //{
+        //    DoubleKmat = new List<string>();
+
+        //    // = DoubleKmat.ToArray();
+        //}
 
         [TestMethod]
         public void ConvertOldResource_Test()
@@ -75,5 +79,67 @@ namespace ExcelReadCTests
             CollectionAssert.AreEqual(expendetOldRecourceList, actualList);
 
         }
+
+        //-------------------------------------------------------
+
+        // 1
+        static string dataProvider = "System.Data.OleDb";
+        static string connectionStr = @"Provider=Microsoft.ACE.OLEDB.12.0;" +
+            @"Data Source = " + Path.Combine(Directory.GetCurrentDirectory(),"") + 
+            @";Extended Properties = Excel 12.0 Xml; HDR=YES;";
+
+        [TestMethod]
+        [DataSource(
+        "System.Data.OleDb",
+        @"Provider=Microsoft.ACE.OLEDB.12.0;
+            Data Source=..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx;
+            Persist Security Info=False;
+            Extended Properties='Excel 12.0 Xml; HDR=YES'",
+        "Sheet$",
+        DataAccessMethod.Sequential)]
+        public void ImportDataForExcel_Test()
+        {
+            // arrange
+            string expendetValidKmat = Convert.ToString(TestContext.DataRow["valid_kmat"]).Replace(" ", "");
+
+            //act
+            string kmat = Convert.ToString(TestContext.DataRow["kmat"]);
+            string actual = Functions.ConvertOldResource(kmat);
+            
+            // assert
+            Assert.AreEqual(expendetValidKmat, actual);
+            
+        }
+
+
+
+        int counter = 0;
+        // 2.2
+        [TestMethod]
+        public void ListFieldKmatForExcel_Test()
+        {
+
+
+            DataTable dtExcel = DataTests.mockLoadDataTableForExcel();
+
+            // arrange
+            List<string> expectedListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
+
+            // act
+            List<string> actualListField = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+
+
+            for (int i = 0; i <= expectedListField.Count-1; i++)
+                Assert.AreEqual(expectedListField[i], actualListField[i], "{0} - {1}: строка = {2}",
+                    expectedListField[i], actualListField[i], i);
+
+            // assert
+            //CollectionAssert.AreEqual(expectedListField, actualListField, "{0} - {1}", 
+            //    expectedListField[counter], actualListField[counter]);
+
+            //counter++;
+        }
+
+
     }
 }
