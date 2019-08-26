@@ -202,10 +202,26 @@ namespace ExcelReadCTests
         }
 
         [TestMethod]
-
-        public void ConvertCeh_Test()
+        [DataSource(
+        "System.Data.OleDb",
+        @"Provider=Microsoft.ACE.OLEDB.12.0;
+            Data Source=..\..\DataTests\ConvertKmat_Test.xlsx;
+            Persist Security Info=False;
+            Extended Properties='Excel 12.0 Xml; HDR=YES'",
+        "Sheet$",
+        DataAccessMethod.Sequential)]
+        public void RenameOldResourceInNew_Test()
         {
+            // arrange
+             
+            //string expendetValidKmat = TestContext.DataRow["valid_kmat"];
 
+            //act
+            //string kmat = Convert.ToString(TestContext.DataRow["kmat"]);
+            //string actual = Functions.ConvertOldResource(kmat);
+
+            // assert
+            //Assert.AreEqual(expendetValidKmat, actual);
         }
     }
 }

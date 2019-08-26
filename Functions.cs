@@ -392,7 +392,7 @@ namespace ExcelReadC
             else
             {
                 int countSymbols = maxLenSymbolsOldResource - old_kmat.Length;
-                return new String('0', countSymbols) + old_kmat;   // 3 + 4 + 1 + 7
+                return new String('0', countSymbols) + old_kmat;
             }
 
         }
