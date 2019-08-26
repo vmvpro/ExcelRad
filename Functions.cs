@@ -184,17 +184,16 @@ namespace ExcelReadC
         }
 
         // 4
-        public static HashSet<string> ListUniqueFieldResource(Dictionary<string, int> dicResources)
+        public static HashSet<string> ListUniqueFieldResource(Dictionary<string, int> dicResourcesAndCount)
         {
-            //List<string> listUniqu = new List<string>();
-
             HashSet<string> listUniqu = new HashSet<string>();
 
-            foreach (KeyValuePair<string, int> row in dicResources)
+            foreach (KeyValuePair<string, int> row in dicResourcesAndCount)
                 for (int i = 1; i < row.Value + 1; i++)
-                {
-                    listUniqu.Add(i + row.Key);
-                }
+                    if (row.Value > 1)
+                        listUniqu.Add(i + row.Key);
+                    else
+                        listUniqu.Add(row.Key);
 
             return listUniqu;
         }

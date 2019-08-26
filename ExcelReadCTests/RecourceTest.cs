@@ -14,15 +14,18 @@ namespace ExcelReadCTests
 
         int counterListFieldKmatForExcel_Test = 0;
 
+        static DataTable dtExcel;
+
         //private static List<string> DoubleKmat;
 
-        //[ClassInitialize]
-        //public static void Initialization(TestContext context)
-        //{
-        //    DoubleKmat = new List<string>();
+        [ClassInitialize]
+        public static void Initialization(TestContext context)
+        {
+           
+            dtExcel = DataTests.mockLoadDataTableForExcel();
 
-        //    // = DoubleKmat.ToArray();
-        //}
+            // = DoubleKmat.ToArray();
+        }
 
         [TestMethod]
         public void ConvertOldResource_Test()
@@ -120,8 +123,6 @@ namespace ExcelReadCTests
         {
 
 
-            DataTable dtExcel = DataTests.mockLoadDataTableForExcel();
-
             // arrange
             List<string> expectedListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
 
@@ -140,6 +141,62 @@ namespace ExcelReadCTests
             //counter++;
         }
 
+        [TestMethod]
+        public void DictionaryResourceAndCount_Test_CountElements()
+        {
+            // arrange
+            Dictionary<string, int> expectedDictionaryGroupBy =
+                DataTests.DictionaryGroupBy();
 
+            // act
+            List<string> expectedListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
+            var actualDictionary = Functions.DictionaryResourceAndCount(expectedListField);
+
+            Assert.AreEqual(expectedDictionaryGroupBy.Count, actualDictionary.Count);
+
+        }
+
+        [TestMethod]
+        public void DictionaryResourceAndCount_Test_CollectionEquals()
+        {
+            // arrange
+            Dictionary<string, int> expectedDictionaryGroupBy =
+                DataTests.DictionaryGroupBy();
+
+            // act
+            List<string> actualListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
+            var actualDictionary = Functions.DictionaryResourceAndCount(actualListField);
+
+            //Assert
+
+            CollectionAssert.AreEqual(expectedDictionaryGroupBy, actualDictionary);
+
+        }
+
+        [TestMethod]
+        //[DataSource(
+        //"System.Data.OleDb",
+        //@"Provider=Microsoft.ACE.OLEDB.12.0;
+        //    Data Source=..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx;
+        //    Persist Security Info=False;
+        //    Extended Properties='Excel 12.0 Xml; HDR=YES'",
+        //"Sheet$",
+        //DataAccessMethod.Sequential)]
+        public void ListUniqueFieldResource_Test()
+        {
+            HashSet<string> hashSetUnique = new HashSet<string>();
+            
+            // arrange
+            var expendetListUnique = Functions.ListFieldKmatForExcel(dtExcel, "kmat_double");
+
+            foreach (var row in expendetListUnique)
+                hashSetUnique.Add(row);
+
+            //act
+            var actualListUnique = Functions.ListUniqueFieldResource(DataTests.DictionaryGroupBy());
+
+            Assert.IsTrue(hashSetUnique.SetEquals(actualListUnique));
+
+        }
     }
 }

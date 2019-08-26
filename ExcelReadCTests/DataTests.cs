@@ -1,4 +1,5 @@
 ﻿using ExcelReadC;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -36,6 +37,23 @@ namespace ExcelReadCTests
             dt.Columns.AddRange(new DataColumn[] { dc1, dc2, dc3, dc4, dc5, dc6, dc7, dc8, dc9 });
 
             return null;
+        }
+
+        public static Dictionary<string, int> DictionaryGroupBy()
+        {
+            Dictionary<string, int> expectedDictionaryGroupBy =
+                new Dictionary<string, int>
+                {
+                    {"1100109",3 },
+                    {"1100184",2 },
+                    {"1100277",2 },
+                    {"1100337",1 },
+                    {"1100418",1 },
+                    {"1100603",1 }
+
+                };
+
+            return expectedDictionaryGroupBy;
         }
     }
 }
