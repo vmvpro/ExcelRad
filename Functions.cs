@@ -381,76 +381,19 @@ namespace ExcelReadC
 
         }
 
-        public static string RenameOldResourceInNew(string ceh, string old_kmat)
+        public static string RenameOldResourceInNew(string old_kmat)
         {
-            int len_kmat_old = old_kmat.Length;
-
-            //---------------
-
-            List<string> DoubleKmat = new List<string>();
-            //string kmat_old = "";
-            string kmat = "";
-            string old_kmat_str = "";
-
-            int count_kmat_old = 0;
-            kmat = "";
-
-            int len = 0;
-
+            int maxLenSymbolsOldResource = 12;
             
-
-            string ceh_convert = "";
-
-            string kmat_old_;
-            if (len_kmat_old >= 12)
+            if (old_kmat.Length >= maxLenSymbolsOldResource)
             {
-                kmat_old_ = old_kmat_str.Substring(len_kmat_old - 12, 12);
-            }
-            else if (old_kmat_str.Count() == 11)
-            {
-                kmat_old_ =  ceh.Substring(ceh.Length - 1) + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 10)
-            {
-                kmat_old_ = ceh.Substring(ceh.Length - 2) + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 9)
-            {
-                kmat_old_ = ceh.Substring(ceh.Length - 3) + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 8)
-            {
-                kmat_old_ = ceh.Substring(ceh.Length - 4) + old_kmat_str;
-            }
-
-
-            if (len_kmat_old >= 12)
-            {
-                kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12, 12);
-            }
-            else if (old_kmat_str.Count() == 11)
-            {
-                kmat = "920" + "0" + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 10)
-            {
-                kmat = "920" + "00" + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 9)
-            {
-                kmat = "920" + ceh.Substring(len - 3, 3) + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 8)
-            {
-                kmat = "920" + ceh_convert + old_kmat_str;
+                return old_kmat.Substring(old_kmat.Length - maxLenSymbolsOldResource);
             }
             else
             {
-                count_kmat_old = 12 - ceh_convert.ToString().Count() - old_kmat_str.Count();
-                kmat = "920" + ceh_convert.ToString() + new String('0', count_kmat_old) + old_kmat_str;   // 3 + 4 + 1 + 7
+                int countSymbols = maxLenSymbolsOldResource - old_kmat.Length;
+                return new String('0', countSymbols) + old_kmat;   // 3 + 4 + 1 + 7
             }
-
-            return kmat;
 
         }
     }
