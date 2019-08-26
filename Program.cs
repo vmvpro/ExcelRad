@@ -4,20 +4,17 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ExcelReadC
 {
     public class Program
     {
-        static int counter = 0;
+        private static int counter = 0;
+        private static OleDbDataAdapter da;
+        private static DataTable dt;
 
-        static OleDbDataAdapter da;
-        static DataTable dt;
-
-        static void Main()
+        private static void Main()
         {
             //dynamic app = null;
             //string excelProgId = "Excel.Application";
@@ -119,11 +116,11 @@ namespace ExcelReadC
             Main2(path.Trim(), fileName.Trim() + ".xlsx");
         }
 
-        
+
 
         public static Dictionary<string, string> KSM = new Dictionary<string, string>();
 
-        static void Main2(string path, string fileName)
+        private static void Main2(string path, string fileName)
         {
             //string path = "Data.xlsx";
             //string path = "DataX.xlsx";
@@ -151,12 +148,12 @@ namespace ExcelReadC
             string old_kmat4 = "00333";
             string old_kmat5 = "00333";
 
-            var list = new List<string>() { "00123", "00123", "00222", "00333", "00333" };
-            var listGroupBy = list.GroupBy(x => x);
+            List<string> list = new List<string>() { "00123", "00123", "00222", "00333", "00333" };
+            IEnumerable<IGrouping<string, string>> listGroupBy = list.GroupBy(x => x);
 
-            var dic = new Dictionary<string, int>();
+            Dictionary<string, int> dic = new Dictionary<string, int>();
 
-            foreach (var item in listGroupBy)
+            foreach (IGrouping<string, string> item in listGroupBy)
                 dic.Add(item.Key, item.Count());
 
 
@@ -171,11 +168,7 @@ namespace ExcelReadC
             //if (str_counter.Length == 1) len_counter =
 
             string kmat99 = "917" + "vmv" + ceh99 + new String('0', 4 - str_counter.Length) + str_counter;
-
-
-
-
-            return;
+            //return;
 
             //string path = @"d:\Doc\Work\MS Visual Studio\ExcelReadC\Остатки\";
 
@@ -252,31 +245,8 @@ namespace ExcelReadC
 
             //string kmat_new = kmat_old.Replace("-", "");
 
-
-
-            string connectionString;
-            OleDbConnection connection;
-
-
-            //return;
-
-            //'Для Excel 12.0 
-            //connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + path + fileName + "." + extension + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
-
-            connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + path + fileName + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
-            connection = new OleDbConnection(connectionString);
-            connection.Open();
-
-            OleDbCommand command = connection.CreateCommand();
-
-            //command.CommandText = "Select * From [sheet$A9:D150]";
-            //command.CommandText = "Select * From [Лист1$A6:G15000] "; //Where [К-во (факт)] = 20 "
-            command.CommandText = "Select * From [sheet$A0:I15000] "; //Where [К-во (факт)] = 20 ";
-
-            da = new OleDbDataAdapter(command);
-            dt = new DataTable();
-
-            da.Fill(dt);
+            string pathFullName = Path.Combine(path, fileName);
+            dt = Functions.ImportDataForExcel(pathFullName);
 
             string name = dt.Rows[0]["n_kdk"].ToString();
 
@@ -587,9 +557,9 @@ namespace ExcelReadC
 
     public class RowTXT
     {
-        DataTable dt;
-        StringBuilder sb;
-        string head = "";
+        private DataTable dt;
+        private StringBuilder sb;
+        private string head = "";
 
         public void CloneTable(DataTable dt)
         {
