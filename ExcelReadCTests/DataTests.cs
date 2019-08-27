@@ -16,7 +16,7 @@ namespace ExcelReadCTests
             string currentDirectory = Directory.GetCurrentDirectory();
             string pathFile = @"..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx";
 
-            return 
+            return
                 Functions.ImportDataForExcel(Path.GetFullPath(Path.Combine(currentDirectory, pathFile)));
         }
 
@@ -49,8 +49,9 @@ namespace ExcelReadCTests
                     {"1100277",2 },
                     {"1100337",1 },
                     {"1100418",1 },
-                    {"1100603",1 }
-
+                    {"1100603",1 },
+                    {"1000004",1 }
+                    
                 };
 
             return expectedDictionaryGroupBy;

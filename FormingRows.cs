@@ -65,7 +65,7 @@ namespace ExcelReadC
                         string ceh_s = row["ceh"].ToString();
                         string kmat_old = row["kmat"].ToString().Trim();
                         //string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
-                        string kmat = Functions.ConvertKmatTest(kmat_old, ceh_s, DoubleKmat);
+                        string kmat = Functions.ConvertKmatTest(kmat_old, ceh_s);
 
                         bool flag1 = false;
                         object[] arrayColumn = row.ItemArray;

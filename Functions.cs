@@ -144,10 +144,6 @@ namespace ExcelReadC
             int result;
             char[] chars = new char[] { ' ', ',', '-', '.', '+' };
 
-            char[] chars_ = " ,-.+".ToArray();
-
-            StringBuilder sb = new StringBuilder();
-
             string convertOldResource = String.Join("", kmat_old.Split(chars));
 
             if (Int32.TryParse(convertOldResource, out result))
@@ -275,7 +271,7 @@ namespace ExcelReadC
             return kmat;
         }
 
-        public static string ConvertKmatTest(string kmat_old, string ceh, List<string> DoubleKmat)
+        public static string ConvertKmatTest(string kmat_old, string ceh)
         {
             string kmat = "";
             string ceh_convert = "";
@@ -285,26 +281,19 @@ namespace ExcelReadC
 
             old_kmat_str = Functions.ConvertOldResource(kmat_old);
 
-            #region "    Convert Ceh   "
+            // -----   Convert Ceh   ---------
 
-            if (ceh.Count() < 6 && old_kmat_str.Count() <= 7)
-                ceh_convert = ceh;
-            else if (ceh.Count() > 4)
-                ceh_convert = ceh.ToString().Substring(0, 1) + ceh.ToString().Substring(2, 3);
-            else
-                ceh_convert = ceh;
+            ceh_convert = ConvertCeh(ceh, old_kmat_str);
 
-            int len = ceh.Count();
-
-            #endregion
-
+            int len_ceh = ceh_convert.Length;
+            
             //--------------------------------------------------------
 
             int len_kmat_old = old_kmat_str.Count();
 
             #region "   CreateNewResource   "
 
-            if (kmat_old == "" || DoubleKmat.Contains(kmat_old))
+            if (kmat_old == "")
             {
                 //return CreateNewKmat(ceh, counter);
                 return CreateNewResource(ceh, 0);
@@ -314,11 +303,10 @@ namespace ExcelReadC
 
             #region "    RenameOldResourceInNew    "
 
-            
 
-            if (len_kmat_old >= 12 && !DoubleKmat.Contains(kmat_old))
+            if (len_kmat_old >= 12)
             {
-                kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12, 12);
+                kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12);
             }
             else if (old_kmat_str.Count() == 11)
             {
@@ -330,7 +318,7 @@ namespace ExcelReadC
             }
             else if (old_kmat_str.Count() == 9)
             {
-                kmat = "920" + ceh.Substring(len - 3, 3) + old_kmat_str;
+                kmat = "920" + ceh.Substring(len_ceh - 3) + old_kmat_str;
             }
             else if (old_kmat_str.Count() == 8)
             {
@@ -358,7 +346,7 @@ namespace ExcelReadC
 
             else if (ceh.Count() > 5)
             {
-                ceh_convert = ceh.ToString().Substring(0, 1) + ceh.ToString().Substring(2, 3);
+                ceh_convert = ceh.ToString().Substring(ceh.Length - 5); //4
             }
             else
                 ceh_convert = ceh;
@@ -384,7 +372,7 @@ namespace ExcelReadC
         public static string RenameOldResourceInNew(string old_kmat)
         {
             int maxLenSymbolsOldResource = 12;
-            
+
             if (old_kmat.Length >= maxLenSymbolsOldResource)
             {
                 return old_kmat.Substring(old_kmat.Length - maxLenSymbolsOldResource);
