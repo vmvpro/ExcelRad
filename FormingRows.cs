@@ -55,32 +55,33 @@ namespace ExcelReadC
             try
             {
                 int k = 0;
-                foreach (DataRow row in dtExcel.Rows)
+                //foreach (DataRow row in dtExcel.Rows)
+                for (int i = 0; i < dtExcel.Rows.Count; i++)
                 //    Console.WriteLine(String.Format("{0}", row.Field<string>("ceh").PadRight(11)));D:\Doc\Work\MS Visual Studio\1_MyApplication\ExcelReadC\ExcelReadC (Git)\FormingRows.cs
                 {
 
                     k++;
                     try
                     {
-                        string ceh_s = row["ceh"].ToString();
-                        string kmat_old = row["kmat"].ToString().Trim();
+                        string ceh_s = dtExcel.Rows[i]["ceh"].ToString();
+                        string kmat_old = dtExcel.Rows[i]["kmat"].ToString().Trim();
                         //string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
                         string kmat = Functions.ConvertKmatTest(kmat_old, ceh_s);
 
                         bool flag1 = false;
-                        object[] arrayColumn = row.ItemArray;
+                        object[] arrayColumn = dtExcel.Rows[i].ItemArray;
 
                         if (Functions.Flag(arrayColumn)) break;
 
                         int ceh = Convert.ToInt32(ceh_s);
 
-                        n_kdk = row["n_kdk"].ToString();
-                        string naim = row["naim"].ToString();
-                        string size_type = row["size_type"].ToString();
-                        int ei = Functions.FuncEI(row["ei"].ToString());
-                        decimal price = Functions.FuncPrice(row["price"].ToString());
-                        decimal count = Functions.FuncCount(row["count"].ToString());
-                        decimal sum = Functions.FuncSum(row["sum"].ToString());
+                        n_kdk = dtExcel.Rows[i]["n_kdk"].ToString();
+                        string naim = dtExcel.Rows[i]["naim"].ToString();
+                        string size_type = dtExcel.Rows[i]["size_type"].ToString();
+                        int ei = Functions.FuncEI(dtExcel.Rows[i]["ei"].ToString());
+                        decimal price = Functions.FuncPrice(dtExcel.Rows[i]["price"].ToString());
+                        decimal count = Functions.FuncCount(dtExcel.Rows[i]["count"].ToString());
+                        decimal sum = Functions.FuncSum(dtExcel.Rows[i]["sum"].ToString());
 
                         try
                         {
@@ -110,9 +111,9 @@ namespace ExcelReadC
                                 if (rows1.Count() > 1)
                                 {
                                     flag = 1;
-                                    for (int i = 0; i < rows1.Count(); i++)
+                                    for (int iRow1 = 0; iRow1 < rows1.Count(); iRow1++)
                                     {
-                                        DataRow r1 = rows1[i];
+                                        DataRow r1 = rows1[iRow1];
 
                                         naim = r1["naim"].ToString();
                                         size_type = r1["size_type"].ToString();
@@ -121,7 +122,7 @@ namespace ExcelReadC
                                         count = Functions.FuncCount(r1["count"].ToString());
                                         sum = Functions.FuncSum(r1["sum"].ToString());
 
-                                        if (i == 0)
+                                        if (iRow1 == 0)
                                         {
                                             string ss1 = rows1[0].ItemArray[2].ToString();
                                             string ss2 = rows1[0].ItemArray[3].ToString();
@@ -160,9 +161,9 @@ namespace ExcelReadC
                                 {
                                     if (rows2.Count() > 1)
                                     {
-                                        for (int i = 0; i < rows2.Count(); i++)
+                                        for (int iRow2 = 0; iRow2 < rows2.Count(); iRow2++)
                                         {
-                                            DataRow r2 = rows2[i];
+                                            DataRow r2 = rows2[iRow2];
 
                                             naim = r2["naim"].ToString();
                                             size_type = r2["size_type"].ToString();
@@ -171,7 +172,7 @@ namespace ExcelReadC
                                             count = Functions.FuncCount(r2["count"].ToString());
                                             sum = Functions.FuncSum(r2["sum"].ToString());
 
-                                            if (i == 0)
+                                            if (iRow2 == 0)
                                             {
                                                 //naim = r2["naim"].ToString();
                                                 //size_type = r2["size_type"].ToString();
@@ -268,14 +269,14 @@ namespace ExcelReadC
                         throw new Exception(ex.Message);
 
                         bool flag = false;
-                        object[] arrayColumn = row.ItemArray;
+                        object[] arrayColumn = dtExcel.Rows[i].ItemArray;
 
-                        for (int i = 0; i < arrayColumn.Length - 1; i++)
-                            flag = arrayColumn[i].ToString() == "" ? true : false;
+                        for (int i2 = 0; i2 < arrayColumn.Length - 1; i2++)
+                            flag = arrayColumn[i2].ToString() == "" ? true : false;
 
                         if (flag) break;
 
-                        rowTXT.Add(row, k + 1);
+                        rowTXT.Add(dtExcel.Rows[i], k + 1);
 
                     }
 

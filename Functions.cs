@@ -18,9 +18,7 @@ namespace ExcelReadC
             for (int i = 0; i < arrayColumn.Length - 1; i++)
             {
                 if (arrayColumn[i].ToString() == "")
-                {
                     result2 = true;
-                }
                 else
                     return false;
             }
