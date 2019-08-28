@@ -8,8 +8,10 @@ namespace ExcelReadC
 {
     public class FormingRows
     {
-        private static void Main2(string path, string fileName)
+        public static void Main2(string path, string fileName)
         {
+            string stringFormat = "{0}\t{1}      {2}     \t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}";
+            
             Dictionary<string, string> KSM = new Dictionary<string, string>();
 
             DateTime DT = new DateTime(2017, 11, 1);
@@ -33,7 +35,7 @@ namespace ExcelReadC
             int len_kmat_s2 = kmat_replace.Count();
 
 
-            string pathFullName = Path.Combine(path, fileName);
+            string pathFullName = Path.Combine(path, fileName.Trim());
 
             DataTable dtExcel = Functions.ImportDataForExcel(pathFullName);
             List<string> listFieldResource = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
@@ -64,7 +66,7 @@ namespace ExcelReadC
                     try
                     {
                         string ceh_s = dtExcel.Rows[i]["ceh"].ToString();
-                        string kmat_old = dtExcel.Rows[i]["kmat"].ToString().Trim();
+                        string kmat_old = listResourceUnique[i]; //dtExcel.Rows[i]["kmat"].ToString().Trim();
                         //string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
                         string kmat = Functions.ConvertKmatTest(kmat_old, ceh_s);
 
@@ -133,13 +135,13 @@ namespace ExcelReadC
                                             //InsertKmat(kmat, kmat_old, naim, size_type, Convert.ToInt32(ei), fileName, BS);
                                             //InsertBalanceDMS(undoc, ndm_s, ceh, n_kdk, kmat, Convert.ToInt32(ei), count, price, sum, BS);
                                             KSM.Add(kmat, ss2);
-                                            Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                                            Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
                                             //}
                                         }
                                         else
                                         {
                                             //InsertBalanceDMS(undoc, ndm_s, ceh, n_kdk, kmat, Convert.ToInt32(ei), count, price, sum, BS);
-                                            Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                                            Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
                                         }
 
                                     }
@@ -182,22 +184,21 @@ namespace ExcelReadC
                                                 //InsertKmat(kmat, kmat_old, naim, size_type, Convert.ToInt32(ei), fileName, BS);
                                                 //InsertBalanceDMS(undoc, ndm_s, ceh, n_kdk, kmat, Convert.ToInt32(ei), count, price, sum, BS);
                                                 KSM.Add(kmat, naim);
-                                                Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                                                Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
                                                 //}
                                             }
                                             else
                                             {
                                                 counter++;
-                                                kmat = Functions.ConvertKmat("", ceh_s, DoubleKmat);
+                                                kmat = Functions.ConvertKmatTest("", ceh_s);
 
                                                 //if (!KsmTable.IsRecord(kmat))
                                                 //{
                                                 //InsertKmat(kmat, kmat_old, naim, size_type, Convert.ToInt32(ei), fileName, BS);
                                                 KSM.Add(kmat, naim);
                                                 //}
-
                                                 //InsertBalanceDMS(undoc, ndm_s, ceh, n_kdk, kmat, Convert.ToInt32(ei), count, price, sum, BS);
-                                                Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                                                Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
                                             }
 
                                         }
@@ -214,21 +215,21 @@ namespace ExcelReadC
                                         if (kmat_old == "")
                                         {
                                             counter++;
-                                            kmat = Functions.ConvertKmat("", ceh_s, DoubleKmat);
+                                            kmat = Functions.ConvertKmatTest("", ceh_s);
                                         }
 
                                         KSM.Add(kmat, naim);
                                         //}
 
                                         //InsertBalanceDMS(undoc, ndm_s, ceh, n_kdk, kmat, Convert.ToInt32(ei), count, price, sum, BS);
-                                        Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                                        Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
                                     }
                                 }
                             }
                             else
                             {
                                 //KSM.Add(kmat, naim);
-                                Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                                Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
                             }
 
                         }
@@ -242,14 +243,14 @@ namespace ExcelReadC
                             if (kmat_old == "")
                             {
                                 counter++;
-                                kmat = Functions.ConvertKmat("", ceh_s, DoubleKmat);
+                                kmat = Functions.ConvertKmatTest("", ceh_s);
                             }
 
                             KSM.Add(kmat, naim);
                             //}
 
                             //InsertBalanceDMS(undoc, ndm_s, ceh, n_kdk, kmat, Convert.ToInt32(ei), count, price, sum, BS);
-                            Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}", k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                            Console.WriteLine(String.Format(stringFormat, k, ceh, kmat, kmat_old.PadRight(12), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
 
                             //---------------------------------------------------------
 
