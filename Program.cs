@@ -109,7 +109,7 @@ namespace ExcelReadC
             string path = @"\\erp\TEMP\App\Остатки\ЛИиДБ\";
 
             string fileName = @"
-            000 - 23008 - 1008094 - Test.xlsx
+            000 - 23008 - 1008094 - Test_.xlsx
             ";
 
             //DateTime dt = new DateTime(18,2,27);

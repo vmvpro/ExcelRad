@@ -151,14 +151,29 @@ namespace ExcelReadC
         }
 
         // 2.1
-        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string FieldName)
+        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string fieldName)
         {
             List<string> list = new List<string>();
 
+
             foreach (DataRow row in dtExcel.Rows)
             {
-                string rowString = row[FieldName].ToString().Trim();
-                list.Add(ConvertOldResource(rowString));
+                string rowString = row[fieldName].ToString().Trim();
+                if (fieldName == "kmat")
+                {
+                    int lenSymbols = rowString.Length;
+
+                    if (lenSymbols >= 11 && lenSymbols <= 15)
+                    {
+                        int diff = lenSymbols % 10;
+
+                        rowString = rowString.Substring(lenSymbols - diff);
+                    }
+
+                    list.Add(ConvertOldResource(rowString));
+                }
+                else
+                    list.Add(ConvertOldResource(rowString));
             }
 
             return list;
@@ -284,7 +299,7 @@ namespace ExcelReadC
             ceh_convert = ConvertCeh(ceh, old_kmat_str);
 
             int len_ceh = ceh_convert.Length;
-            
+
             //--------------------------------------------------------
 
             int len_kmat_old = old_kmat_str.Count();
@@ -320,7 +335,7 @@ namespace ExcelReadC
             }
             else if (old_kmat_str.Count() == 8)
             {
-                kmat = "920" + ceh_convert + old_kmat_str;
+                kmat = "920" + ceh.Substring(len_ceh - 4) + old_kmat_str;
             }
             else
             {

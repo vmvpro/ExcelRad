@@ -331,6 +331,21 @@ namespace ExcelReadCTests
 
         }
 
+        [TestMethod]
+        public void ConvertAllResourceInExcelAndUniqueList()
+        {
+            List<string> listKmat = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+            List<string> listCeh = Functions.ListFieldKmatForExcel(dtExcel, "ceh");
+
+            List<string> listConvertKmat = new List<string>();
+
+            for(int i = 0; i < listKmat.Count; i++)
+                listConvertKmat.Add(Functions.ConvertKmatTest(listUnique[i], listCeh[i]));
+
+            //CollectionAssert.AreEqual();
+            //listUnique
+        }
+
 
     }
 }

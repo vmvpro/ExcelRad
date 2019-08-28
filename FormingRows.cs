@@ -19,7 +19,10 @@ namespace ExcelReadC
             int counter = 0;
             
             //------------------------------------
-            
+
+            int len_ = 15%10;
+            int max_ = 12;
+
             string extension = "xlsx";
 
             string[] stringSeparator = new string[] { " - " };
