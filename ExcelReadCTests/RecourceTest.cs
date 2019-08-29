@@ -264,7 +264,7 @@ namespace ExcelReadCTests
             string kmat_old = TestContext.DataRow["kmat_old"].ToString();
             string ceh = TestContext.DataRow["ceh"].ToString();
 
-            string actualKmat = Functions.ConvertKmatTest(kmat_old, ceh);
+            string actualKmat = Functions.RenameOldResourceInNew(kmat_old, ceh);
 
             // assert
             Assert.AreEqual(expectedKmat, actualKmat);
@@ -340,7 +340,7 @@ namespace ExcelReadCTests
             List<string> listConvertKmat = new List<string>();
 
             for(int i = 0; i < listKmat.Count; i++)
-                listConvertKmat.Add(Functions.ConvertKmatTest(listUnique[i], listCeh[i]));
+                listConvertKmat.Add(Functions.RenameOldResourceInNew(listUnique[i], listCeh[i]));
 
             //CollectionAssert.AreEqual();
             //listUnique

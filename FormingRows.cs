@@ -76,18 +76,34 @@ namespace ExcelReadC
                 string kmat_old = dtExcel.Rows[i]["kmat"].ToString().Trim();
 
                 // конвертирование в новый ресурс 920[ceh_s][kmat_]
-                string kmat = Functions.ConvertKmatTest(kmat_, ceh_s);
+                string kmat = Functions.RenameOldResourceInNew(kmat_, ceh_s);
 
                 int ceh = Convert.ToInt32(ceh_s);
 
                 n_kdk = dtExcel.Rows[i]["n_kdk"].ToString();
                 string naim = dtExcel.Rows[i]["naim"].ToString();
                 string size_type = dtExcel.Rows[i]["size_type"].ToString();
-                int ei = Functions.FuncEI(dtExcel.Rows[i]["ei"].ToString());
+
+                // Преобразование едениц имерения
+                // Нужно смотреть по листу Excel, какая кодировка введена
+                // Если кодировка 'Серийки', то необходимо использовать Functions.FuncEI
+                // Если кодировка ИТ, так и оставлять
+
+                int ei = 0;
+                try
+                {
+
+                    //ei = Functions.FuncEI(dtExcel.Rows[i]["ei"].ToString());
+                    ei = Convert.ToInt32(dtExcel.Rows[i]["ei"].ToString());
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                
                 decimal price = Functions.FuncPrice(dtExcel.Rows[i]["price"].ToString());
                 decimal count = Functions.FuncCount(dtExcel.Rows[i]["count"].ToString());
                 decimal sum = Functions.FuncSum(dtExcel.Rows[i]["sum"].ToString());
-
 
                 if (!DoubleKmat.Contains(kmat_))
                 {
@@ -101,9 +117,6 @@ namespace ExcelReadC
                 }
             }
 
-
-
-
             Console.WriteLine("-------------------------------------------------");
 
             //foreach (var ss in KSM)
@@ -111,9 +124,9 @@ namespace ExcelReadC
 
             Console.WriteLine();
 
-            decimal sumCount = dtExcel.Select("n_kdk = '" + n_kdk.ToString() + "'").Sum(x => Convert.ToDecimal(x["count"]));
-            //sumCountString = sumCount.ToString();
-
+            decimal sumCount = dtExcel.Select("n_kdk = '" + n_kdk.ToString() + "'")
+                .Sum(x => Convert.ToDecimal(x["count"]));
+            
             Console.WriteLine("Сумма количество = " + sumCount);
             //rowTXT.WriteTXT(path, fileName, n_kdk_file);
 

@@ -321,7 +321,7 @@ namespace ExcelReadC
                         bool flag1 = false;
                         object[] arrayColumn = row.ItemArray;
 
-                        if (Functions.Flag(arrayColumn)) break;
+                        //if (Functions.Flag(arrayColumn)) break;
 
                         int ceh = Convert.ToInt32(ceh_s);
 

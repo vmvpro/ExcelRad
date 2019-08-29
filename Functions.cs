@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OleDb;
 using System.Linq;
-using System.Text;
 
 namespace ExcelReadC
 {
@@ -11,21 +7,12 @@ namespace ExcelReadC
     {
 
         #region "    Методы преобразования полей таблицы Excel    "
-
-        public static bool Flag(object[] arrayColumn)
-        {
-            bool result2 = false;
-            for (int i = 0; i < arrayColumn.Length - 1; i++)
-            {
-                if (arrayColumn[i].ToString() == "")
-                    result2 = true;
-                else
-                    return false;
-            }
-
-            return result2;
-        }
-
+        
+        /// <summary>
+        /// Метод преобразования едениц измерения
+        /// </summary>
+        /// <param name="ei"></param>
+        /// <returns></returns>
         public static int FuncEI(string ei)
         {
             try
@@ -43,6 +30,11 @@ namespace ExcelReadC
             }
         }
 
+        /// <summary>
+        /// Расшифровка кодирвки едениц измерения из Серийки в ИТ
+        /// </summary>
+        /// <param name="ei"></param>
+        /// <returns></returns>
         public static int ConvertEI(string ei)
         {
             switch (ei)
@@ -69,6 +61,7 @@ namespace ExcelReadC
             decimal price = 0;
             try
             {
+                string priceString = price_.Replace('.', ',');
                 price = Convert.ToDecimal(price_);
             }
             catch (Exception)
@@ -84,7 +77,8 @@ namespace ExcelReadC
             decimal sum = 0;
             try
             {
-                sum = Convert.ToDecimal(sum_);
+                string sumString = sum_.Replace('.', ',');
+                sum = Convert.ToDecimal(sumString);
             }
             catch (Exception)
             {
@@ -99,7 +93,7 @@ namespace ExcelReadC
             decimal count = 0;
             try
             {
-                count = Convert.ToDecimal(count_);
+                count = Convert.ToInt32(count_);
             }
             catch (Exception)
             {
@@ -110,44 +104,33 @@ namespace ExcelReadC
         }
 
         #endregion
-                
+
         //-------------------------------------------------------------------
-        
-        public static string ConvertKmatTest(string kmat_old, string ceh)
+
+        /// <summary>
+        /// Конвертирование ресурса в 15-значный код
+        /// </summary>
+        /// <param name="kmat_old">Старый ресурс (Excel)</param>
+        /// <param name="ceh">Склад (1301, 23008)</param>
+        /// <returns></returns>
+        public static string RenameOldResourceInNew(string kmat_old, string ceh)
         {
-            string kmat = "";
+            #region "    ConvertCeh    "
+
             string ceh_convert = "";
-            
-            string old_kmat_str = "";
-
-            //old_kmat_str = Functions.DeleteSpecialCharacters(kmat_old);
-
-            // -----   Convert Ceh   ---------
-
-            ceh_convert = ConvertCeh(ceh, old_kmat_str);
-
-            int len_ceh = ceh_convert.Length;
-
-            //--------------------------------------------------------
-
-            #region "   CreateNewResource   "
-
-            //if (kmat_old == "")
-            //{
-            //    //return CreateNewKmat(ceh, counter);
-            //    return CreateNewResource(ceh, 0);
-            //}
+            ceh_convert = ConvertCeh(ceh, kmat_old);
 
             #endregion
 
             #region "    RenameOldResourceInNew    "
 
-            return kmat = RenameOldResourceInNew("920", old_kmat_str, ceh_convert);
+            string kmat = "";
+            return kmat = _renameOldResourceInNew("920", kmat_old, ceh_convert);
 
             #endregion
         }
 
-        public static string ConvertCeh(string ceh, string old_kmat_str)
+        private static string ConvertCeh(string ceh, string old_kmat_str)
         {
             string ceh_convert = "";
 
@@ -169,7 +152,7 @@ namespace ExcelReadC
 
         }
 
-        public static string CreateNewResource(string ceh, int counter)
+        private static string CreateNewResource(string ceh, int counter)
         {
             string str_counter = counter.ToString();
             int len_counter = str_counter.Length;
@@ -181,7 +164,7 @@ namespace ExcelReadC
 
         }
 
-        public static string RenameOldResourceInNew(string groupResource, string old_kmat_str, string ceh_convert)
+        private static string _renameOldResourceInNew(string groupResource, string old_kmat_str, string ceh_convert)
         {
             //int maxLenSymbolsOldResource = 12;
 
