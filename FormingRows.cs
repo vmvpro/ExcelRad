@@ -23,7 +23,8 @@ namespace ExcelReadC
 
             result = fileName.Split(stringSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-            string ceh_ = result[1].Substring(0, 1) + result[1].Substring(2, 3);
+            //string ceh_ = result[1].Substring(0, 1) + result[1].Substring(2, 3);
+            string ceh_ = result[1];
             string n_kdk_file = result[2];
 
             string kmat_s2 = "1234567890123";

@@ -318,34 +318,6 @@ namespace ExcelReadC
 
             #region "    RenameOldResourceInNew    "
 
-            //int len_kmat_old = old_kmat_str.Count();
-
-            //if (len_kmat_old >= 12)
-            //{
-            //    kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12);
-            //}
-            //else if (old_kmat_str.Count() == 11)
-            //{
-            //    kmat = "920" + "0" + old_kmat_str;
-            //}
-            //else if (old_kmat_str.Count() == 10)
-            //{
-            //    kmat = "920" + "00" + old_kmat_str;
-            //}
-            //else if (old_kmat_str.Count() == 9)
-            //{
-            //    kmat = "920" + ceh.Substring(len_ceh - 3) + old_kmat_str;
-            //}
-            //else if (old_kmat_str.Count() == 8)
-            //{
-            //    kmat = "920" + ceh.Substring(len_ceh - 4) + old_kmat_str;
-            //}
-            //else
-            //{
-            //    count_kmat_old = 12 - ceh_convert.ToString().Count() - old_kmat_str.Count();
-            //    kmat = "920" + ceh_convert.ToString() + new String('0', count_kmat_old) + old_kmat_str;   // 3 + 4 + 1 + 7
-            //}
-
             return kmat = RenameOldResourceInNew("920", old_kmat_str, ceh_convert);
 
             #endregion
