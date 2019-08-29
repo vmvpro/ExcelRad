@@ -16,14 +16,7 @@ namespace ExcelReadC
 
             DateTime DT = new DateTime(2017, 11, 1);
 
-            int counter = 0;
-
             //------------------------------------
-
-            int len_ = 15 % 10;
-            int max_ = 12;
-
-            string extension = "xlsx";
 
             string[] stringSeparator = new string[] { " - " };
             string[] result;
@@ -49,21 +42,6 @@ namespace ExcelReadC
             List<string> listResourceUnique = Functions.ListUniqueFieldResource(dictionary);
 
             string name = dtExcel.Rows[0]["n_kdk"].ToString();
-
-            //------------------------------------------------------------
-
-
-            //for (int row_ = 0; row_ <= dtExcel.Rows.Count; row_++)
-            //{
-            //    var old_kmat = "";
-
-            //}
-
-
-
-            //------------------------------------------------------------
-
-
 
             RowTXT rowTXT = new RowTXT();
             rowTXT.CloneTable(dtExcel);
