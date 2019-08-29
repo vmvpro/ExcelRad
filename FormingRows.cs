@@ -45,12 +45,12 @@ namespace ExcelReadC
 
             var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
 
+            // Отсортированный список с уникальными значениями ресурсов
             List<string> listResourceUnique = Functions.ListUniqueFieldResource(dictionary);
 
             string name = dtExcel.Rows[0]["n_kdk"].ToString();
 
             //------------------------------------------------------------
-
 
 
             //for (int row_ = 0; row_ <= dtExcel.Rows.Count; row_++)
@@ -74,18 +74,28 @@ namespace ExcelReadC
             for (int i = 0; i < listFieldResource.Count; i++)
             {
 
+                // Форматиррование старого ресурса с листа Excel
+                // из 001-123456 преобразовывает => 1123456
                 string oldKmatRename = listFieldResource[i];
+
+                // Ищет первое вхождение в списке заканчивающее на преобразованный выше ресурс
+                // Идея след.:
+                // в списке одинаковый код отличающейся только в начале порядковым номером
+                // 1555777999
+                // 2555777999
+                // oldKmatRename возвращает 555777999, в этом случае находится первое попавшее 
+                // значение => 1555777999
                 string kmat_ = listResourceUnique.Find(x => x.EndsWith(oldKmatRename));
+
+                // потом удаляем со списка 1555777999, и след. раз функция возвратит значение 2555777999
+                // так происходит избавление от дублей
                 listResourceUnique.Remove(kmat_);
 
                 string ceh_s = dtExcel.Rows[i]["ceh"].ToString();
                 string kmat_old = dtExcel.Rows[i]["kmat"].ToString().Trim();
+
+                // конвертирование в новый ресурс 920[ceh_s][kmat_]
                 string kmat = Functions.ConvertKmatTest(kmat_, ceh_s);
-
-                bool flag1 = false;
-                object[] arrayColumn = dtExcel.Rows[i].ItemArray;
-
-                if (Functions.Flag(arrayColumn)) break;
 
                 int ceh = Convert.ToInt32(ceh_s);
 
