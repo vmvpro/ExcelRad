@@ -37,12 +37,12 @@ namespace ExcelReadC
             oExcel excel = new oExcel(pathFullName);
 
             DataTable dtExcel = excel.ImportDataForExcel(); //Functions.ImportDataForExcel(pathFullName);
-            List<string> listFieldResource =  Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+            List<string> listFieldResource = excel.ListField("kmat"); //Functions.ListFieldKmatForExcel(dtExcel, "kmat");
 
-            var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
+            //var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
 
             // Отсортированный список с уникальными значениями ресурсов
-            List<string> listResourceUnique = Functions.ListUniqueFieldResource(dictionary);
+            List<string> listResourceUnique = excel.ListUniqueField(); //Functions.ListUniqueFieldResource(dictionary);
 
             string name = dtExcel.Rows[0]["n_kdk"].ToString();
 
