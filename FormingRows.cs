@@ -34,8 +34,10 @@ namespace ExcelReadC
 
             string pathFullName = Path.Combine(path, fileName.Trim());
 
-            DataTable dtExcel = Functions.ImportDataForExcel(pathFullName);
-            List<string> listFieldResource = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+            oExcel excel = new oExcel(pathFullName);
+
+            DataTable dtExcel = excel.ImportDataForExcel(); //Functions.ImportDataForExcel(pathFullName);
+            List<string> listFieldResource =  Functions.ListFieldKmatForExcel(dtExcel, "kmat");
 
             var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
 
