@@ -112,14 +112,16 @@ namespace ExcelReadC
         #endregion
 
         // 1
-        public static DataTable ImportDataForExcel(string pathFullName)
+        public static DataTable ImportDataForExcel(string pathFullName, string sheetName = "Sheet")
         {
-            DataTable dt = new DataTable("Sheet");
+            DataTable dt = new DataTable(sheetName);
 
             string connectionString;
             
             //'Для Excel 12.0 
-            connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + pathFullName + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
+            connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; 
+                Data Source = " + pathFullName + "; " +
+                "Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
 
             using (var connection = new OleDbConnection(connectionString))
             {
@@ -127,14 +129,12 @@ namespace ExcelReadC
 
                 OleDbCommand command = connection.CreateCommand();
 
-                command.CommandText = "Select * From [sheet$A0:I15000] ";
+                command.CommandText = "Select * From [" + sheetName + "$A0:I15000] ";
 
                 OleDbDataAdapter da = new OleDbDataAdapter(command);
 
                 da.Fill(dt);
             }
-
-               
 
             return dt;
         }
@@ -154,10 +154,9 @@ namespace ExcelReadC
         }
 
         // 2.1
-        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string fieldName)
+        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string fieldName = "kmat")
         {
             List<string> list = new List<string>();
-
 
             foreach (DataRow row in dtExcel.Rows)
             {
@@ -171,11 +170,11 @@ namespace ExcelReadC
                 {
                     int lenSymbols = rowString.Length;
 
-                    if (lenSymbols >= 11 && lenSymbols <= 15)
+                    if (lenSymbols >= 11 && lenSymbols < 15)
                     {
                         int diff = lenSymbols % 10;
 
-                        rowString = rowString.Substring(diff, lenSymbols - diff);
+                        rowString = rowString.Substring(diff);
                     }
 
                     list.Add(ConvertOldResource(rowString));
