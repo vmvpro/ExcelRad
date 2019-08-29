@@ -117,21 +117,24 @@ namespace ExcelReadC
             DataTable dt = new DataTable("Sheet");
 
             string connectionString;
-            OleDbConnection connection;
-
+            
             //'Для Excel 12.0 
             connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + pathFullName + "; Extended Properties=\"Excel 12.0 Xml;HDR=Yes\";";
-            connection = new OleDbConnection(connectionString);
-            connection.Open();
 
-            OleDbCommand command = connection.CreateCommand();
+            using (var connection = new OleDbConnection(connectionString))
+            {
+                connection.Open();
 
-            command.CommandText = "Select * From [sheet$A0:I15000] ";
+                OleDbCommand command = connection.CreateCommand();
 
-            OleDbDataAdapter da = new OleDbDataAdapter(command);
-            dt = new DataTable();
+                command.CommandText = "Select * From [sheet$A0:I15000] ";
 
-            da.Fill(dt);
+                OleDbDataAdapter da = new OleDbDataAdapter(command);
+
+                da.Fill(dt);
+            }
+
+               
 
             return dt;
         }
