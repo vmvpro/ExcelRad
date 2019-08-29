@@ -159,6 +159,11 @@ namespace ExcelReadC
             foreach (DataRow row in dtExcel.Rows)
             {
                 string rowString = row[fieldName].ToString().Trim();
+
+                string cellCeh = row["ceh"].ToString().Trim();
+
+                if (cellCeh == "") break; 
+
                 if (fieldName == "kmat")
                 {
                     int lenSymbols = rowString.Length;
@@ -167,7 +172,7 @@ namespace ExcelReadC
                     {
                         int diff = lenSymbols % 10;
 
-                        rowString = rowString.Substring(lenSymbols - diff);
+                        rowString = rowString.Substring(diff, lenSymbols - diff);
                     }
 
                     list.Add(ConvertOldResource(rowString));

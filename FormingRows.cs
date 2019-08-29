@@ -69,9 +69,10 @@ namespace ExcelReadC
                     try
                     {
                         string ceh_s = dtExcel.Rows[i]["ceh"].ToString();
-                        string kmat_old = listResourceUnique[i]; //dtExcel.Rows[i]["kmat"].ToString().Trim();
+                        string kmat_old = dtExcel.Rows[i]["kmat"].ToString().Trim();
+                        string kmat_ = listResourceUnique[i]; //dtExcel.Rows[i]["kmat"].ToString().Trim();
                         //string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
-                        string kmat = Functions.ConvertKmatTest(kmat_old, ceh_s);
+                        string kmat = Functions.ConvertKmatTest(kmat_, ceh_s);
 
                         bool flag1 = false;
                         object[] arrayColumn = dtExcel.Rows[i].ItemArray;
@@ -90,9 +91,9 @@ namespace ExcelReadC
 
                         try
                         {
-                            if (!DoubleKmat.Contains(kmat_old) | kmat_old == "")
+                            if (!DoubleKmat.Contains(kmat_) | kmat_ == "")
                             {
-                                DoubleKmat.Add(kmat_old);
+                                DoubleKmat.Add(kmat_);
                                 
                                 //KSM.Add(rowKmat["kmat"].ToString(), rowKmat["kmat"].ToString());
                                 //Console.WriteLine(String.Format("{0}\t{1}\t{2}\t  {3}\t{4}\t{5}\t{6}\t{7}", k, ceh, kmat, kmat_old, ei, price, count, sum));
