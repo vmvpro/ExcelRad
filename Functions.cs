@@ -18,9 +18,7 @@ namespace ExcelReadC
             for (int i = 0; i < arrayColumn.Length - 1; i++)
             {
                 if (arrayColumn[i].ToString() == "")
-                {
                     result2 = true;
-                }
                 else
                     return false;
             }
@@ -144,10 +142,6 @@ namespace ExcelReadC
             int result;
             char[] chars = new char[] { ' ', ',', '-', '.', '+' };
 
-            char[] chars_ = " ,-.+".ToArray();
-
-            StringBuilder sb = new StringBuilder();
-
             string convertOldResource = String.Join("", kmat_old.Split(chars));
 
             if (Int32.TryParse(convertOldResource, out result))
@@ -157,14 +151,34 @@ namespace ExcelReadC
         }
 
         // 2.1
-        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string FieldName)
+        public static List<string> ListFieldKmatForExcel(DataTable dtExcel, string fieldName)
         {
             List<string> list = new List<string>();
 
+
             foreach (DataRow row in dtExcel.Rows)
             {
-                string rowString = row[FieldName].ToString().Trim();
-                list.Add(ConvertOldResource(rowString));
+                string rowString = row[fieldName].ToString().Trim();
+
+                string cellCeh = row["ceh"].ToString().Trim();
+
+                if (cellCeh == "") break; 
+
+                if (fieldName == "kmat")
+                {
+                    int lenSymbols = rowString.Length;
+
+                    if (lenSymbols >= 11 && lenSymbols <= 15)
+                    {
+                        int diff = lenSymbols % 10;
+
+                        rowString = rowString.Substring(diff, lenSymbols - diff);
+                    }
+
+                    list.Add(ConvertOldResource(rowString));
+                }
+                else
+                    list.Add(ConvertOldResource(rowString));
             }
 
             return list;
@@ -184,8 +198,9 @@ namespace ExcelReadC
         }
 
         // 4
-        public static HashSet<string> ListUniqueFieldResource(Dictionary<string, int> dicResourcesAndCount)
+        public static List<string> ListUniqueFieldResource(Dictionary<string, int> dicResourcesAndCount)
         {
+            // Для того, чтобы предусмотреть не повторающие значения в списке
             HashSet<string> listUniqu = new HashSet<string>();
 
             foreach (KeyValuePair<string, int> row in dicResourcesAndCount)
@@ -195,7 +210,7 @@ namespace ExcelReadC
                     else
                         listUniqu.Add(row.Key);
 
-            return listUniqu;
+            return listUniqu.ToList();
         }
 
         //-------------------------------------------------------------------
@@ -274,76 +289,60 @@ namespace ExcelReadC
             return kmat;
         }
 
-        
-
-        public static string ConvertKmatTest(string kmat_old, string ceh, List<string> DoubleKmat)
+        public static string ConvertKmatTest(string kmat_old, string ceh)
         {
             string kmat = "";
             string ceh_convert = "";
-            int count_kmat_old = 0;
-
+            
             string old_kmat_str = "";
 
             old_kmat_str = Functions.ConvertOldResource(kmat_old);
 
-            #region "    Convert Ceh   "
+            // -----   Convert Ceh   ---------
 
-            if (ceh.Count() < 6 && old_kmat_str.Count() <= 7)
-                ceh_convert = ceh;
-            else if (ceh.Count() > 4)
-                ceh_convert = ceh.ToString().Substring(0, 1) + ceh.ToString().Substring(2, 3);
-            else
-                ceh_convert = ceh;
+            ceh_convert = ConvertCeh(ceh, old_kmat_str);
 
-            int len = ceh.Count();
-
-            #endregion
+            int len_ceh = ceh_convert.Length;
 
             //--------------------------------------------------------
 
-            int len_kmat_old = old_kmat_str.Count();
-
             #region "   CreateNewResource   "
 
-            if (kmat_old == "" || DoubleKmat.Contains(kmat_old))
-            {
-                //return CreateNewKmat(ceh, counter);
-                return CreateNewResource(ceh, 0);
-            }
+            //if (kmat_old == "")
+            //{
+            //    //return CreateNewKmat(ceh, counter);
+            //    return CreateNewResource(ceh, 0);
+            //}
 
             #endregion
 
             #region "    RenameOldResourceInNew    "
 
-            if (len_kmat_old >= 12 && !DoubleKmat.Contains(kmat_old))
-            {
-                kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12, 12);
-            }
-            else if (old_kmat_str.Count() == 11)
-            {
-                kmat = "920" + "0" + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 10)
-            {
-                kmat = "920" + "00" + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 9)
-            {
-                kmat = "920" + ceh.Substring(len - 3, 3) + old_kmat_str;
-            }
-            else if (old_kmat_str.Count() == 8)
-            {
-                kmat = "920" + ceh_convert + old_kmat_str;
-            }
-            else
-            {
-                count_kmat_old = 12 - ceh_convert.ToString().Count() - old_kmat_str.Count();
-                kmat = "920" + ceh_convert.ToString() + new String('0', count_kmat_old) + old_kmat_str;   // 3 + 4 + 1 + 7
-            }
-
-            return kmat;
+            return kmat = RenameOldResourceInNew("920", old_kmat_str, ceh_convert);
 
             #endregion
+        }
+
+        public static string ConvertCeh(string ceh, string old_kmat_str)
+        {
+            string ceh_convert = "";
+
+            if (ceh.Count() < 6 && old_kmat_str.Count() <= 7)
+            {
+                ceh_convert = ceh;
+            }
+
+            else if (ceh.Count() > 5)
+            {
+                ceh_convert = ceh.ToString().Substring(ceh.Length - 5); //4
+            }
+            else
+                ceh_convert = ceh;
+
+
+            return ceh_convert;
+
+
         }
 
         public static string CreateNewResource(string ceh, int counter)
@@ -358,51 +357,65 @@ namespace ExcelReadC
 
         }
 
-        public static string RenameOldResourceInNew(string ceh, int counter)
+        public static string RenameOldResourceInNew(string groupResource, string old_kmat_str, string ceh_convert)
         {
-            List<string> DoubleKmat = new List<string>();
-            string kmat_old = "";
-            string kmat = "";
-            string old_kmat_str = "";
+            //int maxLenSymbolsOldResource = 12;
 
-            int count_kmat_old = 0;
-            kmat = "";
 
-            int len = 0;
 
-            int len_kmat_old = 0;
+            //if (old_kmat_str.Length == 15)
+            //{
+            //    return old_kmat_str;
+            //}
 
-            string ceh_convert = "";
+            //if (old_kmat_str.Length >= maxLenSymbolsOldResource)
+            //{
+            //    return old_kmat_str.Substring(old_kmat_str.Length - maxLenSymbolsOldResource);
+            //}
+            //else
+            //{
+            //    int countSymbols = maxLenSymbolsOldResource - old_kmat_str.Length;
+            //    return new String('0', countSymbols) + old_kmat_str;
+            //}
 
-            if (len_kmat_old >= 12 && !DoubleKmat.Contains(kmat_old))
+            //-----------------------
+
+            string kmat = null;
+            int len_ceh = ceh_convert.Length;
+
+            int len_kmat_old = old_kmat_str.Count();
+
+            if (old_kmat_str.Length == 15)
             {
-                kmat = "920" + old_kmat_str.Substring(len_kmat_old - 12, 12);
+                return old_kmat_str;
+            }
+            else if (len_kmat_old >= 12)
+            {
+                kmat = groupResource + old_kmat_str.Substring(len_kmat_old - 12);
             }
             else if (old_kmat_str.Count() == 11)
             {
-                kmat = "920" + "0" + old_kmat_str;
+                kmat = groupResource + "0" + old_kmat_str;
             }
             else if (old_kmat_str.Count() == 10)
             {
-                kmat = "920" + "00" + old_kmat_str;
+                kmat = groupResource + "00" + old_kmat_str;
             }
             else if (old_kmat_str.Count() == 9)
             {
-                kmat = "920" + ceh.Substring(len - 3, 3) + old_kmat_str;
+                kmat = groupResource + ceh_convert.Substring(len_ceh - 3) + old_kmat_str;
             }
             else if (old_kmat_str.Count() == 8)
             {
-                kmat = "920" + ceh_convert + old_kmat_str;
+                kmat = groupResource + ceh_convert.Substring(len_ceh - 4) + old_kmat_str;
             }
             else
             {
-                count_kmat_old = 12 - ceh_convert.ToString().Count() - old_kmat_str.Count();
+                int count_kmat_old = 12 - ceh_convert.ToString().Count() - old_kmat_str.Count();
                 kmat = "920" + ceh_convert.ToString() + new String('0', count_kmat_old) + old_kmat_str;   // 3 + 4 + 1 + 7
             }
 
             return kmat;
-
-
 
         }
     }

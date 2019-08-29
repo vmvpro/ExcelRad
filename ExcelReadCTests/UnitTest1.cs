@@ -39,7 +39,7 @@ namespace ExcelReadC_UnitTest
         }
 
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML",
-        "testDataKmat.xml",
+        @"..\..\DataTests\testDataKmat.xml",
         "Resource",
         DataAccessMethod.Sequential)]
         [TestMethod]
@@ -59,8 +59,8 @@ namespace ExcelReadC_UnitTest
             
 
             // assert
-            //Assert.AreEqual(expendet, kmat);
-            StringAssert.Equals("1", "2");
+            Assert.AreEqual(expendet, kmat);
+            //StringAssert.Equals("1", "2");
 
         }
 

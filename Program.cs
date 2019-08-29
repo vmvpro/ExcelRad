@@ -104,16 +104,20 @@ namespace ExcelReadC
             //string fileName = "017 - 23014 - 1016156 - Черниш Л.П. - Шияненко_.xlsx";
             //string fileName = "018 - 23014 - 1016156 - Черниш Л.П. - Шияненко_.xlsx";
 
+
+
             string path = @"\\erp\TEMP\App\Остатки\ЛИиДБ\";
 
             string fileName = @"
-            003 - 13221 - 1221270 - Ковтун _vmv
+            001 - 1120 - 1120025 - Татьяна - Касс
             ";
 
             //DateTime dt = new DateTime(18,2,27);
+            string path_ = Directory.GetCurrentDirectory();
 
+            FormingRows.Main2(path_.Trim(), fileName.Trim());
 
-            Main2(path.Trim(), fileName.Trim() + ".xlsx");
+            //Main2(path.Trim(), fileName.Trim() + ".xlsx");
         }
 
 
