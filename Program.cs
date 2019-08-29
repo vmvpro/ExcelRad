@@ -109,13 +109,14 @@ namespace ExcelReadC
             string path = @"\\erp\TEMP\App\Остатки\ЛИиДБ\";
 
             string fileName = @"
-            001 - 1120 - 1120025 - Татьяна - Касс
+            011 - 23010 - 1010134 - vmv
             ";
 
             //DateTime dt = new DateTime(18,2,27);
             string path_ = Directory.GetCurrentDirectory();
 
-            FormingRows.Main2(path_.Trim(), fileName.Trim());
+            // + ".xlsx"
+            FormingRows.Main2(path_.Trim(), fileName.Trim() );
 
             //Main2(path.Trim(), fileName.Trim() + ".xlsx");
         }
