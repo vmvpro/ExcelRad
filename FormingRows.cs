@@ -36,13 +36,13 @@ namespace ExcelReadC
 
             oExcel excel = new oExcel(pathFullName);
 
-            DataTable dtExcel = excel.ImportDataForExcel(); //Functions.ImportDataForExcel(pathFullName);
-            List<string> listFieldResource = excel.ListField("kmat"); //Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+            DataTable dtExcel = excel.ImportDataForExcel(); 
+            List<string> listFieldResource = excel.ListField("kmat"); 
 
             //var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
 
             // Отсортированный список с уникальными значениями ресурсов
-            List<string> listResourceUnique = excel.ListUniqueField(); //Functions.ListUniqueFieldResource(dictionary);
+            List<string> listResourceUnique = excel.ListUniqueField(); 
 
             string name = dtExcel.Rows[0]["n_kdk"].ToString();
 
