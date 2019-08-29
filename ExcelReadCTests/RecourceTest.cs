@@ -42,7 +42,7 @@ namespace ExcelReadCTests
             string expendetOldResource = "1123456";
 
             //act   
-            string actualOldResource = Functions.ConvertOldResource("001-123,45 6");
+            string actualOldResource = Functions.DeleteSpecialCharacters("001-123,45 6");
 
             // assert
             Assert.AreEqual<string>(expendetOldResource, actualOldResource);
@@ -64,7 +64,7 @@ namespace ExcelReadCTests
             List<string> actualList = new List<string>();
 
             foreach (string oldRecource in OldRecourceList)
-                actualList.Add(Functions.ConvertOldResource(oldRecource));
+                actualList.Add(Functions.DeleteSpecialCharacters(oldRecource));
 
             // assert
             CollectionAssert.AreEqual(expendetOldRecourceList, actualList);
@@ -94,7 +94,7 @@ namespace ExcelReadCTests
             List<string> actualList = new List<string>();
 
             foreach (string oldRecource in OldRecourceList)
-                actualList.Add(Functions.ConvertOldResource(oldRecource));
+                actualList.Add(Functions.DeleteSpecialCharacters(oldRecource));
             // assert
 
             CollectionAssert.AreEqual(expendetOldRecourceList, actualList);
@@ -125,7 +125,7 @@ namespace ExcelReadCTests
 
             //act
             string kmat = Convert.ToString(TestContext.DataRow["kmat"]);
-            string actual = Functions.ConvertOldResource(kmat);
+            string actual = Functions.DeleteSpecialCharacters(kmat);
 
             // assert
             Assert.AreEqual(expendetValidKmat, actual);

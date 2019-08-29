@@ -25,6 +25,11 @@ namespace ExcelReadC
         }
 
         // 1
+        /// <summary>
+        /// Импортирование таблицы Excel 
+        /// </summary>
+        /// <param name="sheetName">Имя листа</param>
+        /// <returns></returns>
         public DataTable ImportDataForExcel(string sheetName = "Sheet")
         {
             dtExcel = new DataTable(sheetName);
@@ -63,15 +68,20 @@ namespace ExcelReadC
             int result;
             char[] chars = new char[] { ' ', ',', '-', '.', '+' };
 
-            string convertOldResource = String.Join("", valueString.Split(chars));
+            string stringValue = String.Join("", valueString.Split(chars));
 
-            if (Int32.TryParse(convertOldResource, out result))
+            if (Int32.TryParse(stringValue, out result))
                 return result.ToString();
 
-            return convertOldResource;
+            return stringValue;
         }
 
         // 2.1
+        /// <summary>
+        /// Сформировать список по полю таблицы 
+        /// </summary>
+        /// <param name="fieldName">Имя поля на листе</param>
+        /// <returns></returns>
         public List<string> ListField(string fieldName = "kmat")
         {
             listField = new List<string>();
@@ -105,7 +115,10 @@ namespace ExcelReadC
         }
 
         // 3
-        private void DictionaryResourceAndCount()
+        /// <summary>
+        /// Группировка: имя поля и количество повторений
+        /// </summary>
+        private void _groupByFieldAndCount()
         {
             groupByFieldAndCount = new Dictionary<string, int>();
 
@@ -117,8 +130,14 @@ namespace ExcelReadC
         }
 
         // 4
+        /// <summary>
+        /// Формирование списка по полю уникальных значений
+        /// </summary>
+        /// <returns></returns>
         public List<string> ListUniqueField()
         {
+            _groupByFieldAndCount();
+
             // Для того, чтобы предусмотреть не повторающие значения в списке
             HashSet<string> listUniqu = new HashSet<string>();
 

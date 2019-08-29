@@ -250,7 +250,7 @@ namespace ExcelReadC
             //string kmat_new = kmat_old.Replace("-", "");
 
             string pathFullName = Path.Combine(path, fileName);
-            dt = Functions.ImportDataForExcel(pathFullName);
+            dt = new DataTable(); // Functions.ImportDataForExcel(pathFullName);
 
             string name = dt.Rows[0]["n_kdk"].ToString();
 
@@ -316,7 +316,7 @@ namespace ExcelReadC
                         //    //throw new Exception("kmat_old_format = " + kmat_old_format);
                         //    ConvertKmat(kmat_old_format, ceh_s);
                         //}
-                        string kmat = Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
+                        string kmat = ""; //Functions.ConvertKmat(kmat_old, ceh_s, DoubleKmat);
 
                         bool flag1 = false;
                         object[] arrayColumn = row.ItemArray;
@@ -439,7 +439,7 @@ namespace ExcelReadC
                                             else
                                             {
                                                 counter++;
-                                                kmat = Functions.ConvertKmat("", ceh_s, DoubleKmat);
+                                                kmat = ""; //Functions.ConvertKmat("", ceh_s, DoubleKmat);
 
                                                 //if (!KsmTable.IsRecord(kmat))
                                                 //{
@@ -465,7 +465,7 @@ namespace ExcelReadC
                                         if (kmat_old == "")
                                         {
                                             counter++;
-                                            kmat = Functions.ConvertKmat("", ceh_s, DoubleKmat);
+                                            kmat = ""; //Functions.ConvertKmat("", ceh_s, DoubleKmat);
                                         }
 
                                         KSM.Add(kmat, naim);
@@ -493,7 +493,7 @@ namespace ExcelReadC
                             if (kmat_old == "")
                             {
                                 counter++;
-                                kmat = Functions.ConvertKmat("", ceh_s, DoubleKmat);
+                                kmat = ""; //Functions.ConvertKmat("", ceh_s, DoubleKmat);
                             }
 
                             KSM.Add(kmat, naim);
