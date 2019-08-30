@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace ExcelReadC
+namespace ExcelRead
 {
     public class FormingRows
     {

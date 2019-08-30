@@ -1,24 +1,31 @@
-﻿using ExcelReadC;
+﻿using ExcelRead;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
 
-namespace ExcelReadCTests
+namespace ExcelReadTests
 {
     public static class DataTests
     {
 
+
         public static DataTable mockLoadDataTableForExcel()
         {
-            StringBuilder pathFullName = new StringBuilder();
-
             string currentDirectory = Directory.GetCurrentDirectory();
             string pathFile = @"..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx";
 
+            string pathFullFile = Path.GetFullPath(Path.Combine(currentDirectory, pathFile));
+
+            oExcel excel = new oExcel(pathFullFile);
+
+
             return
-                Functions.ImportDataForExcel(Path.GetFullPath(Path.Combine(currentDirectory, pathFile)));
+                   excel.ImportDataForExcel();
+                //Functions.ImportDataForExcel();
         }
+
+
 
         public static DataTable mockLoadData()
         {

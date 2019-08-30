@@ -5,7 +5,7 @@ using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 
-namespace ExcelReadC
+namespace ExcelRead
 {
     public class oExcel
     {

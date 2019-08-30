@@ -6,8 +6,8 @@
     <ProjectGuid>{C7BD55AB-1C8E-4BD6-9779-F14145A3C1F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExcelReadCTests</RootNamespace>
-    <AssemblyName>ExcelReadCTests</AssemblyName>
+    <RootNamespace>ExcelReadTests</RootNamespace>
+    <AssemblyName>ExcelReadTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,6 +34,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>vmvpro.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,9 +68,9 @@
     <Compile Include="RecourceTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExcelReadC.csproj">
+    <ProjectReference Include="..\ExcelRead.csproj">
       <Project>{38674839-a494-46df-a9cc-b193c3a3e13c}</Project>
-      <Name>ExcelReadC</Name>
+      <Name>ExcelRead</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +79,7 @@
   <ItemGroup>
     <None Include="DataTests\001 - 23016 - 1016156 - Черныш Л.П. - Балан_Test.xlsx" />
     <None Include="DataTests\ConvertKmat_Test.xlsx" />
+    <None Include="vmvpro.pfx" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

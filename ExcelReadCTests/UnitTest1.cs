@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ExcelReadC;
+using ExcelRead;
 using System.Collections.Generic;
 using System.Data;
 

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using ExcelReadC;
+using System.Runtime.CompilerServices;
+using ExcelRead;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ExcelReadCTests
+[assembly: InternalsVisibleTo("ExcelRead")]
+namespace ExcelReadTests
 {
     [TestClass]
     public class RecourceTest
