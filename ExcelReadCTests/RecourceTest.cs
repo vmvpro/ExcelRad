@@ -34,8 +34,9 @@ namespace ExcelReadTests
             dtExcel = excel.ImportDataForExcel();
 
             listField = excel.ListField("kmat"); // Functions.ListFieldKmatForExcel(dtExcel, "kmat");
-            //dictionaryGroupBy = Functions.DictionaryResourceAndCount(listField);
-            listUnique = new List<string>(); // Functions.ListUniqueFieldResource(dictionaryGroupBy);
+            dictionaryGroupBy = excel._groupByFieldAndCount("kmat"); //DictionaryResourceAndCount(listField);
+
+            listUnique = excel.ListUniqueField("kmat"); //new List<string>(); // Functions.ListUniqueFieldResource(dictionaryGroupBy);
 
             // = DoubleKmat.ToArray();
         }
@@ -174,8 +175,8 @@ namespace ExcelReadTests
                 DataTests.DictionaryGroupBy();
 
             // act
-            List<string> expectedListField = new List<string>(); //Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
-            Dictionary<string, int> actualDictionary = new Dictionary<string, int>(); // Functions.DictionaryResourceAndCount(expectedListField);
+            List<string> expectedListField = excel.ListField("valid_kmat");
+            Dictionary<string, int> actualDictionary = excel._groupByFieldAndCount("kmat");
 
             Assert.AreEqual(expectedDictionaryGroupBy.Count, actualDictionary.Count);
 
@@ -189,8 +190,8 @@ namespace ExcelReadTests
                 DataTests.DictionaryGroupBy();
 
             // act
-            List<string> actualListField = new List<string>(); // Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
-            Dictionary<string, int> actualDictionary = new Dictionary<string, int>(); // Functions.DictionaryResourceAndCount(actualListField);
+            List<string> actualListField = excel.ListField("valid_kmat");
+            Dictionary<string, int> actualDictionary = excel._groupByFieldAndCount("kmat"); // new Dictionary<string, int>(); // Functions.DictionaryResourceAndCount(actualListField);
 
             //Assert
 
@@ -212,13 +213,13 @@ namespace ExcelReadTests
             HashSet<string> hashSetUnique = new HashSet<string>();
 
             // arrange
-            var expendetListUnique = new List<string>(); // Functions.ListFieldKmatForExcel(dtExcel, "kmat_double");
+            var expendetListUnique = excel.ListField("kmat_double");
 
             foreach (var row in expendetListUnique)
                 hashSetUnique.Add(row);
 
             //act
-            var actualListUnique = new List<string>(); // Functions.ListUniqueFieldResource(DataTests.DictionaryGroupBy());
+            var actualListUnique = excel.ListUniqueField("kmat") ;
 
             CollectionAssert.AreEqual(expendetListUnique, actualListUnique);
 
@@ -321,7 +322,7 @@ namespace ExcelReadTests
             List<string> actualList = new List<string>();
 
             foreach (var ceh in experimentlList)
-                actualList.Add("ConvertCeh");
+                actualList.Add(Functions.ConvertCeh(ceh, "12345678"));
                 //actualList.Add(Functions.ConvertCeh(ceh, "12345678"));
 
             // arrange

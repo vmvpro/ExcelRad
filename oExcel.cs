@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+[assembly: InternalsVisibleToAttribute("ExcelReadTests")] 
 namespace ExcelRead
 {
 
@@ -86,7 +87,7 @@ namespace ExcelRead
         /// <returns></returns>
         public List<string> ListField(string fieldName = "kmat")
         {
-            listField = new List<string>();
+            var listField = new List<string>();
 
             foreach (DataRow row in dtExcel.Rows)
             {
@@ -116,19 +117,24 @@ namespace ExcelRead
             return listField;
         }
 
+        internal void vmv()
+        { }
+
         // 3
         /// <summary>
         /// Группировка: имя поля и количество повторений
         /// </summary>
-        private void _groupByFieldAndCount()
+        internal Dictionary<string, int> _groupByFieldAndCount(string fieldName)
         {
-            groupByFieldAndCount = new Dictionary<string, int>();
+            var listField = ListField(fieldName);
+            var groupByFieldAndCount = new Dictionary<string, int>();
 
             IEnumerable<IGrouping<string, string>> listGroupBy = listField.GroupBy(x => x);
 
             foreach (IGrouping<string, string> item in listGroupBy)
                 groupByFieldAndCount.Add(item.Key, item.Count());
 
+            return groupByFieldAndCount;
         }
 
         // 4
@@ -136,14 +142,14 @@ namespace ExcelRead
         /// Формирование списка по полю уникальных значений
         /// </summary>
         /// <returns></returns>
-        public List<string> ListUniqueField()
+        public List<string> ListUniqueField(string fieldName = "kmat")
         {
-            _groupByFieldAndCount();
+            var dictionaryFieldAndCount = _groupByFieldAndCount(fieldName);
 
             // Для того, чтобы предусмотреть не повторающие значения в списке
             HashSet<string> listUniqu = new HashSet<string>();
 
-            foreach (KeyValuePair<string, int> row in groupByFieldAndCount)
+            foreach (KeyValuePair<string, int> row in dictionaryFieldAndCount)
                 for (int i = 1; i < row.Value + 1; i++)
                     if (row.Value > 1)
                         listUniqu.Add(i + row.Key);

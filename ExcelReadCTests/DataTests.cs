@@ -21,12 +21,8 @@ namespace ExcelReadTests
 
         public static DataTable mockLoadDataTableForExcel()
         {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string pathFile = @"..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx";
 
-            string pathFullFile = Path.GetFullPath(Path.Combine(currentDirectory, pathFile));
-
-            oExcel excel = new oExcel(pathFullFile);
+            oExcel excel = new oExcel(GetFullPathExcelFile);
 
 
             return
@@ -66,7 +62,11 @@ namespace ExcelReadTests
                     {"1100337",1 },
                     {"1100418",1 },
                     {"1100603",1 },
-                    {"1000004",1 }
+                    {"1000004",1 },
+                    {"80030480", 2 },
+                    {"111112345678900", 1},
+                    {"2345678900",5 }
+                    
                     
                 };
 
