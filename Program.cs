@@ -4,8 +4,10 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
+[assembly: InternalsVisibleToAttribute("ExcelReadTests")]    
 namespace ExcelRead
 {
     public class Program

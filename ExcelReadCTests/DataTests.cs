@@ -9,6 +9,15 @@ namespace ExcelReadTests
     public static class DataTests
     {
 
+        //FileInfo file = new FileInfo().fu
+
+        static string currentDirectory = Directory.GetCurrentDirectory();
+        static string fullPath = @"..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx";
+
+        public static string GetFullPathExcelFile
+        {
+            get { return Path.GetFullPath(Path.Combine(currentDirectory, fullPath)); }
+        }
 
         public static DataTable mockLoadDataTableForExcel()
         {
@@ -22,7 +31,7 @@ namespace ExcelReadTests
 
             return
                    excel.ImportDataForExcel();
-                //Functions.ImportDataForExcel();
+            //Functions.ImportDataForExcel();
         }
 
 

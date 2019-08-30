@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-//[assembly: InternalsVisibleToAttribute("ExcelReadTests")]
+
 namespace ExcelRead
 {
-    
+    //[assembly: InternalsVisibleToAttribute("ExcelReadTests")]    
     public static class Functions
     {
 

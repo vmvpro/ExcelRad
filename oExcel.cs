@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ExcelRead
 {
+
     public class oExcel
     {
         string pathFullName;
