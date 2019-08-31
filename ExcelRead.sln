@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelRead", "ExcelRead.csproj", "{38674839-A494-46DF-A9CC-B193C3A3E13C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelReadTests", "ExcelReadCTests\ExcelReadTests.csproj", "{C7BD55AB-1C8E-4BD6-9779-F14145A3C1F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelReadTests", "ExcelReadTests\ExcelReadTests.csproj", "{C7BD55AB-1C8E-4BD6-9779-F14145A3C1F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
