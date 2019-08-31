@@ -117,9 +117,6 @@ namespace ExcelRead
             return listField;
         }
 
-        internal void vmv()
-        { }
-
         // 3
         /// <summary>
         /// Группировка: имя поля и количество повторений

@@ -6,7 +6,8 @@ using System.Runtime.CompilerServices;
 using ExcelRead;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//[assembly: InternalsVisibleToAttribute("ExcelRead")]    
+//[assembly: InternalsVisibleToAttribute("ExcelRead")] 
+//[assembly: IgnoresAccessChecksTo("ExcelRead")]
 namespace ExcelReadTests
 {
     
