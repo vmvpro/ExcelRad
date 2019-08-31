@@ -8,11 +8,11 @@ namespace ExcelRead
 {
     public class FormingRows
     {
-        public static void Main2(string path, string fileName)
+        public static void Run(string path, string fileName)
         {
             string stringFormat = "{0}\t{1}      {2}     \t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}";
 
-            Dictionary<string, string> KSM = new Dictionary<string, string>();
+            Dictionary<string, string> dmsRows = new Dictionary<string, string>();
 
             DateTime DT = new DateTime(2017, 11, 1);
 
@@ -20,7 +20,7 @@ namespace ExcelRead
 
 
             string[] stringSeparator = new string[] { " - " };
-            
+
             string[] result = fileName.Split(stringSeparator, StringSplitOptions.RemoveEmptyEntries);
 
             string ceh_ = result[1];
@@ -32,18 +32,15 @@ namespace ExcelRead
 
             oExcel excel = new oExcel(pathFullName);
 
-            DataTable dtExcel = excel.ImportDataForExcel(); 
-            List<string> listFieldResource = excel.ListField("kmat"); 
+            DataTable dtExcel = excel.ImportDataForExcel();
+            List<string> listFieldResource = excel.ListField("kmat");
 
             // Отсортированный список с уникальными значениями ресурсов
-            List<string> listResourceUnique = excel.ListUniqueField(); 
+            List<string> listResourceUnique = excel.ListUniqueField();
 
             string name = dtExcel.Rows[0]["n_kdk"].ToString();
 
-            RowTXT rowTXT = new RowTXT();
-            rowTXT.CloneTable(dtExcel);
-
-            List<string> DoubleKmat = new List<string>();
+            List<string> KsmTable = new List<string>();
             string n_kdk = "";
 
             for (int i = 0; i < listFieldResource.Count; i++)
@@ -89,31 +86,27 @@ namespace ExcelRead
                 decimal count = Functions.FuncCount(dtExcel.Rows[i]["count"].ToString());
                 decimal sum = Functions.FuncSum(dtExcel.Rows[i]["sum"].ToString());
 
-                if (!DoubleKmat.Contains(kmat_))
-                {
-                    DoubleKmat.Add(kmat_);
+                // Прототип таблицы KSM
+                if (!KsmTable.Contains(kmat_))
+                    KsmTable.Add(kmat_);
 
-                    KSM.Add(kmat, naim);
+                // Прототип строк DMS
+                dmsRows.Add(kmat, naim);
 
-                    //KSM.Add(rowKmat["kmat"].ToString(), rowKmat["kmat"].ToString());
-                    Console.WriteLine(String.Format(stringFormat, i + 1, ceh, kmat, kmat_old.PadRight(15), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
+                Console.WriteLine(String.Format(stringFormat, 
+                    i + 1, ceh, kmat, kmat_old.PadRight(15), naim.PadRight(30), size_type.PadRight(20), ei, price, count, sum));
 
-                }
             }
 
             Console.WriteLine("-------------------------------------------------");
-
-            //foreach (var ss in KSM)
-            //Console.WriteLine(ss.Key); 
 
             Console.WriteLine();
 
             decimal sumCount = dtExcel.Select("n_kdk = '" + n_kdk.ToString() + "'")
                 .Sum(x => Convert.ToDecimal(x["count"]));
-            
-            Console.WriteLine("Сумма количество = " + sumCount);
-            //rowTXT.WriteTXT(path, fileName, n_kdk_file);
 
+            Console.WriteLine("Сумма количество = " + sumCount);
+            
             Console.ReadLine();
 
         }
