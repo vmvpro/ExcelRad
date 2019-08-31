@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
-namespace ExcelReadC
+
+namespace ExcelRead
 {
+    //[assembly: InternalsVisibleToAttribute("ExcelReadTests")]    
     public static class Functions
     {
 
@@ -113,7 +116,7 @@ namespace ExcelReadC
         /// <param name="kmat_old">Старый ресурс (Excel)</param>
         /// <param name="ceh">Склад (1301, 23008)</param>
         /// <returns></returns>
-        public static string RenameOldResourceInNew(string kmat_old, string ceh)
+        internal static string RenameOldResourceInNew(string kmat_old, string ceh)
         {
             #region "    ConvertCeh    "
 
@@ -130,7 +133,7 @@ namespace ExcelReadC
             #endregion
         }
 
-        private static string ConvertCeh(string ceh, string old_kmat_str)
+        internal static string ConvertCeh(string ceh, string old_kmat_str)
         {
             string ceh_convert = "";
 
@@ -152,7 +155,7 @@ namespace ExcelReadC
 
         }
 
-        private static string CreateNewResource(string ceh, int counter)
+        internal static string CreateNewResource(string ceh, int counter)
         {
             string str_counter = counter.ToString();
             int len_counter = str_counter.Length;

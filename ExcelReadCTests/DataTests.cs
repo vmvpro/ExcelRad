@@ -1,24 +1,36 @@
-﻿using ExcelReadC;
+﻿using ExcelRead;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
 
-namespace ExcelReadCTests
+namespace ExcelReadTests
 {
     public static class DataTests
     {
 
+        //FileInfo file = new FileInfo().fu
+
+        static string currentDirectory = Directory.GetCurrentDirectory();
+        static string fullPath = @"..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx";
+
+        public static string GetFullPathExcelFile
+        {
+            get { return Path.GetFullPath(Path.Combine(currentDirectory, fullPath)); }
+        }
+
         public static DataTable mockLoadDataTableForExcel()
         {
-            StringBuilder pathFullName = new StringBuilder();
 
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string pathFile = @"..\..\DataTests\001 - 1301 - 1222333 - LastName - test_01.xlsx";
+            oExcel excel = new oExcel(GetFullPathExcelFile);
+
 
             return
-                Functions.ImportDataForExcel(Path.GetFullPath(Path.Combine(currentDirectory, pathFile)));
+                   excel.ImportDataForExcel();
+            //Functions.ImportDataForExcel();
         }
+
+
 
         public static DataTable mockLoadData()
         {
@@ -50,7 +62,11 @@ namespace ExcelReadCTests
                     {"1100337",1 },
                     {"1100418",1 },
                     {"1100603",1 },
-                    {"1000004",1 }
+                    {"1000004",1 },
+                    {"80030480", 2 },
+                    {"111112345678900", 1},
+                    {"2345678900",5 }
+                    
                     
                 };
 

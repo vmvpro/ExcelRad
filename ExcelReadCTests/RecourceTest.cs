@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using ExcelReadC;
+using System.Runtime.CompilerServices;
+using ExcelRead;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ExcelReadCTests
+//[assembly: InternalsVisibleToAttribute("ExcelRead")]    
+namespace ExcelReadTests
 {
+    
     [TestClass]
     public class RecourceTest
     {
@@ -15,6 +18,8 @@ namespace ExcelReadCTests
         int counterListFieldKmatForExcel_Test = 0;
 
         static DataTable dtExcel;
+
+        static oExcel excel;
 
         static List<string> listField = new List<string>();
         static Dictionary<string, int> dictionaryGroupBy = new Dictionary<string, int>();
@@ -25,12 +30,13 @@ namespace ExcelReadCTests
         [ClassInitialize]
         public static void Initialization(TestContext context)
         {
+            excel = new oExcel(DataTests.GetFullPathExcelFile);
+            dtExcel = excel.ImportDataForExcel();
 
-            dtExcel = DataTests.mockLoadDataTableForExcel();
+            listField = excel.ListField("kmat"); // Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+            dictionaryGroupBy = excel._groupByFieldAndCount("kmat"); //DictionaryResourceAndCount(listField);
 
-            listField = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
-            dictionaryGroupBy = Functions.DictionaryResourceAndCount(listField);
-            listUnique = Functions.ListUniqueFieldResource(dictionaryGroupBy);
+            listUnique = excel.ListUniqueField("kmat"); //new List<string>(); // Functions.ListUniqueFieldResource(dictionaryGroupBy);
 
             // = DoubleKmat.ToArray();
         }
@@ -42,7 +48,8 @@ namespace ExcelReadCTests
             string expendetOldResource = "1123456";
 
             //act   
-            string actualOldResource = Functions.DeleteSpecialCharacters("001-123,45 6");
+            //string actualOldResource = Functions.DeleteSpecialCharacters("001-123,45 6");
+            string actualOldResource = "";
 
             // assert
             Assert.AreEqual<string>(expendetOldResource, actualOldResource);
@@ -64,7 +71,8 @@ namespace ExcelReadCTests
             List<string> actualList = new List<string>();
 
             foreach (string oldRecource in OldRecourceList)
-                actualList.Add(Functions.DeleteSpecialCharacters(oldRecource));
+                actualList.Add("Functions.DeleteSpecialCharacters(oldRecource)");
+                //actualList.Add(Functions.DeleteSpecialCharacters(oldRecource));
 
             // assert
             CollectionAssert.AreEqual(expendetOldRecourceList, actualList);
@@ -94,7 +102,7 @@ namespace ExcelReadCTests
             List<string> actualList = new List<string>();
 
             foreach (string oldRecource in OldRecourceList)
-                actualList.Add(Functions.DeleteSpecialCharacters(oldRecource));
+                actualList.Add("Functions.DeleteSpecialCharacters(oldRecource)");
             // assert
 
             CollectionAssert.AreEqual(expendetOldRecourceList, actualList);
@@ -125,7 +133,7 @@ namespace ExcelReadCTests
 
             //act
             string kmat = Convert.ToString(TestContext.DataRow["kmat"]);
-            string actual = Functions.DeleteSpecialCharacters(kmat);
+            string actual = "Functions.DeleteSpecialCharacters(kmat)";
 
             // assert
             Assert.AreEqual(expendetValidKmat, actual);
@@ -142,10 +150,10 @@ namespace ExcelReadCTests
 
 
             // arrange
-            List<string> expectedListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
+            List<string> expectedListField = new List<string>(); // Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
 
             // act
-            List<string> actualListField = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+            List<string> actualListField = new List<string>(); // Functions.ListFieldKmatForExcel(dtExcel, "kmat");
 
 
             for (int i = 0; i <= expectedListField.Count - 1; i++)
@@ -167,8 +175,8 @@ namespace ExcelReadCTests
                 DataTests.DictionaryGroupBy();
 
             // act
-            List<string> expectedListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
-            var actualDictionary = Functions.DictionaryResourceAndCount(expectedListField);
+            List<string> expectedListField = excel.ListField("valid_kmat");
+            Dictionary<string, int> actualDictionary = excel._groupByFieldAndCount("kmat");
 
             Assert.AreEqual(expectedDictionaryGroupBy.Count, actualDictionary.Count);
 
@@ -182,8 +190,8 @@ namespace ExcelReadCTests
                 DataTests.DictionaryGroupBy();
 
             // act
-            List<string> actualListField = Functions.ListFieldKmatForExcel(dtExcel, "valid_kmat");
-            var actualDictionary = Functions.DictionaryResourceAndCount(actualListField);
+            List<string> actualListField = excel.ListField("valid_kmat");
+            Dictionary<string, int> actualDictionary = excel._groupByFieldAndCount("kmat"); // new Dictionary<string, int>(); // Functions.DictionaryResourceAndCount(actualListField);
 
             //Assert
 
@@ -205,13 +213,13 @@ namespace ExcelReadCTests
             HashSet<string> hashSetUnique = new HashSet<string>();
 
             // arrange
-            var expendetListUnique = Functions.ListFieldKmatForExcel(dtExcel, "kmat_double");
+            var expendetListUnique = excel.ListField("kmat_double");
 
             foreach (var row in expendetListUnique)
                 hashSetUnique.Add(row);
 
             //act
-            var actualListUnique = Functions.ListUniqueFieldResource(DataTests.DictionaryGroupBy());
+            var actualListUnique = excel.ListUniqueField("kmat") ;
 
             CollectionAssert.AreEqual(expendetListUnique, actualListUnique);
 
@@ -264,7 +272,7 @@ namespace ExcelReadCTests
             string kmat_old = TestContext.DataRow["kmat_old"].ToString();
             string ceh = TestContext.DataRow["ceh"].ToString();
 
-            string actualKmat = Functions.RenameOldResourceInNew(kmat_old, ceh);
+            string actualKmat = ""; // Functions.RenameOldResourceInNew(kmat_old, ceh);
 
             // assert
             Assert.AreEqual(expectedKmat, actualKmat);
@@ -283,6 +291,8 @@ namespace ExcelReadCTests
 
             foreach (var ceh in experimentlList)
                 actualList.Add(Functions.ConvertCeh(ceh, "12345678"));
+                //actualList.Add("ConvertCeh");
+                
             
             // arrange
 
@@ -313,6 +323,7 @@ namespace ExcelReadCTests
 
             foreach (var ceh in experimentlList)
                 actualList.Add(Functions.ConvertCeh(ceh, "12345678"));
+                //actualList.Add(Functions.ConvertCeh(ceh, "12345678"));
 
             // arrange
 
@@ -331,20 +342,22 @@ namespace ExcelReadCTests
 
         }
 
-        [TestMethod]
-        public void ConvertAllResourceInExcelAndUniqueList()
-        {
-            List<string> listKmat = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
-            List<string> listCeh = Functions.ListFieldKmatForExcel(dtExcel, "ceh");
+        //[TestMethod]
+        //public void ConvertAllResourceInExcelAndUniqueList()
+        //{
+        //    List<string> listKmat = Functions.ListFieldKmatForExcel(dtExcel, "kmat");
+        //    List<string> listCeh = Functions.ListFieldKmatForExcel(dtExcel, "ceh");
 
-            List<string> listConvertKmat = new List<string>();
+        //    List<string> listConvertKmat = new List<string>();
 
-            for(int i = 0; i < listKmat.Count; i++)
-                listConvertKmat.Add(Functions.RenameOldResourceInNew(listUnique[i], listCeh[i]));
+        //    for(int i = 0; i < listKmat.Count; i++)
+        //        listConvertKmat.Add(Functions.RenameOldResourceInNew(listUnique[i], listCeh[i]));
 
-            //CollectionAssert.AreEqual();
-            //listUnique
-        }
+
+
+        //    //CollectionAssert.AreEqual();
+        //    //listUnique
+        //}
 
 
     }

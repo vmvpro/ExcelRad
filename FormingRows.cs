@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-namespace ExcelReadC
+namespace ExcelRead
 {
     public class FormingRows
     {
@@ -18,19 +18,15 @@ namespace ExcelReadC
 
             //------------------------------------
 
+
             string[] stringSeparator = new string[] { " - " };
-            string[] result;
+            
+            string[] result = fileName.Split(stringSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-            result = fileName.Split(stringSeparator, StringSplitOptions.RemoveEmptyEntries);
-
-            //string ceh_ = result[1].Substring(0, 1) + result[1].Substring(2, 3);
             string ceh_ = result[1];
             string n_kdk_file = result[2];
 
-            string kmat_s2 = "1234567890123";
-            string kmat_replace = kmat_s2.Replace("-", "");
-            int len_kmat_s2 = kmat_replace.Count();
-
+            // ------------------------------------
 
             string pathFullName = Path.Combine(path, fileName.Trim());
 
@@ -38,8 +34,6 @@ namespace ExcelReadC
 
             DataTable dtExcel = excel.ImportDataForExcel(); 
             List<string> listFieldResource = excel.ListField("kmat"); 
-
-            //var dictionary = Functions.DictionaryResourceAndCount(listFieldResource);
 
             // Отсортированный список с уникальными значениями ресурсов
             List<string> listResourceUnique = excel.ListUniqueField(); 
@@ -88,19 +82,9 @@ namespace ExcelReadC
                 // Нужно смотреть по листу Excel, какая кодировка введена
                 // Если кодировка 'Серийки', то необходимо использовать Functions.FuncEI
                 // Если кодировка ИТ, так и оставлять
+                //ei = Functions.FuncEI(dtExcel.Rows[i]["ei"].ToString());
+                int ei = Convert.ToInt32(dtExcel.Rows[i]["ei"].ToString());
 
-                int ei = 0;
-                try
-                {
-
-                    //ei = Functions.FuncEI(dtExcel.Rows[i]["ei"].ToString());
-                    ei = Convert.ToInt32(dtExcel.Rows[i]["ei"].ToString());
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-                
                 decimal price = Functions.FuncPrice(dtExcel.Rows[i]["price"].ToString());
                 decimal count = Functions.FuncCount(dtExcel.Rows[i]["count"].ToString());
                 decimal sum = Functions.FuncSum(dtExcel.Rows[i]["sum"].ToString());

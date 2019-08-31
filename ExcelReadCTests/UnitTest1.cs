@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ExcelReadC;
+using ExcelRead;
 using System.Collections.Generic;
 using System.Data;
 
@@ -31,7 +31,7 @@ namespace ExcelReadC_UnitTest
             List<string> DoubleKmat_ = new List<string>() { };
 
 
-            string kmat = Functions.ConvertKmat(kmat_old, ceh, DoubleKmat_);
+            string kmat = ""; // Functions.ConvertKmat(kmat_old, ceh, DoubleKmat_);
 
             // assert
             Assert.AreEqual(expendet, kmat);
@@ -52,7 +52,7 @@ namespace ExcelReadC_UnitTest
             string kmat_old = Convert.ToString(TestContext.DataRow["KmatOld"]);
             string ceh = Convert.ToString(TestContext.DataRow["Ceh"]);
 
-            string kmat = Functions.ConvertKmat(kmat_old, ceh, DoubleKmat);
+            string kmat = ""; // Functions.ConvertKmat(kmat_old, ceh, DoubleKmat);
             DoubleKmat.Add(kmat_old);
 
 
@@ -81,7 +81,7 @@ namespace ExcelReadC_UnitTest
             string kmat_old = Convert.ToString(TestContext.DataRow["KmatOld"]);
             string ceh = Convert.ToString(TestContext.DataRow["Ceh"]);
 
-            string kmat = Functions.ConvertKmat(kmat_old, ceh, DoubleKmat);
+            string kmat = ""; //Functions.ConvertKmat(kmat_old, ceh, DoubleKmat);
             DoubleKmat.Add(kmat_old);
 
 
